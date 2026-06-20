@@ -19,7 +19,17 @@ export default defineConfig({
     viewport: { width: 1280, height: 900 },
   },
   projects: [
-    { name: "chromium", use: { ...devices["Desktop Chrome"] } },
+    {
+      name: "chromium",
+      use: {
+        ...devices["Desktop Chrome"],
+        launchOptions: {
+          executablePath:
+            process.env.PLAYWRIGHT_CHROMIUM_PATH ??
+            "/chromium-1194/chrome-linux/chrome",
+        },
+      },
+    },
   ],
   webServer: process.env.PLAYWRIGHT_NO_SERVER
     ? undefined

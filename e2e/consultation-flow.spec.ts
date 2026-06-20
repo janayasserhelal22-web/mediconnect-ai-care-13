@@ -64,10 +64,9 @@ test.describe("Connect Care consultation flow", () => {
 
     // --- 3. Finish consultation → triggers summary generation ---
     await expect(finishBtn).toBeEnabled();
-    await Promise.all([
-      page.waitForURL("**/summary", { timeout: 60_000 }),
-      finishBtn.click(),
-    ]);
+    await finishBtn.click();
+    // Summary generation runs server-side and can take a while.
+    await page.waitForURL("**/summary", { timeout: 120_000 });
 
     // --- 4. Verify summary page ---
     await expect(

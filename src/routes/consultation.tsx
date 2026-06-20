@@ -1,7 +1,8 @@
 import { SiteHeader } from "@/components/SiteHeader";
 import { generateSummary } from "@/lib/summary.functions";
 import { useChat } from "@ai-sdk/react";
-import { createFileRoute, useNavigate, useServerFn } from "@tanstack/react-router";
+import { createFileRoute, useNavigate } from "@tanstack/react-router";
+import { useServerFn } from "@tanstack/react-start";
 import { DefaultChatTransport, type UIMessage } from "ai";
 import { useEffect, useRef, useState } from "react";
 

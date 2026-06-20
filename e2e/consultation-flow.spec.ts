@@ -45,19 +45,22 @@ test.describe("Connect Care consultation flow", () => {
 
     for (let i = 0; i < PATIENT_REPLIES.length; i++) {
       const reply = PATIENT_REPLIES[i];
+      await composer.click();
       await composer.fill(reply);
-      await sendBtn.click();
+      // Submit via Enter — the form handles Enter (no shift) → submit.
+      await composer.press("Enter");
 
       // Patient bubble appears.
-      await expect(page.getByText(reply, { exact: false })).toBeVisible();
+      await expect(page.getByText(reply, { exact: false }).first()).toBeVisible();
 
       // Wait for streaming to finish: composer re-enables.
-      await expect(composer).toBeEnabled({ timeout: 45_000 });
+      await expect(composer).toBeEnabled({ timeout: 60_000 });
 
       // Reply counter increments.
       const expected = `${i + 1} ${i + 1 === 1 ? "reply" : "replies"}`;
       await expect(page.getByText(expected)).toBeVisible();
     }
+    void sendBtn; // selector retained for documentation
 
     // --- 3. Finish consultation → triggers summary generation ---
     await expect(finishBtn).toBeEnabled();

@@ -1,13 +1,14 @@
 import { SiteHeader } from "@/components/SiteHeader";
 import type { ConsultationSummary } from "@/lib/summary.functions";
+import { useI18n } from "@/lib/i18n";
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
 
 export const Route = createFileRoute("/summary")({
   head: () => ({
     meta: [
-      { title: "Consultation Summary — Connect Care" },
-      { name: "description", content: "Structured clinical case summary for physician review." },
+      { title: "ملخّص الاستشارة — Connect Care" },
+      { name: "description", content: "ملخّص حالة سريري منظّم لمراجعة الطبيب." },
     ],
   }),
   component: SummaryPage,
@@ -16,6 +17,7 @@ export const Route = createFileRoute("/summary")({
 type StoredSummary = { summary: ConsultationSummary; createdAt: string };
 
 function SummaryPage() {
+  const { t, locale } = useI18n();
   const [data, setData] = useState<StoredSummary | null>(null);
   const [loaded, setLoaded] = useState(false);
 
@@ -36,16 +38,13 @@ function SummaryPage() {
       <div className="min-h-screen bg-slate-50">
         <SiteHeader />
         <main className="mx-auto max-w-2xl px-6 py-24 text-center">
-          <h1 className="text-3xl font-bold tracking-tight">No consultation yet</h1>
-          <p className="mt-4 text-slate-600">
-            Start a symptom intake to see how Connect Care turns your conversation into a clinical
-            case summary.
-          </p>
+          <h1 className="text-3xl font-bold tracking-tight">{t("summary.emptyTitle")}</h1>
+          <p className="mt-4 text-slate-600">{t("summary.emptyDesc")}</p>
           <Link
             to="/consultation"
             className="mt-8 inline-block rounded-full bg-brand px-8 py-4 text-base font-semibold text-white shadow-brand transition-transform hover:scale-[1.02]"
           >
-            Start a Consultation
+            {t("summary.emptyCta")}
           </Link>
         </main>
       </div>
@@ -70,30 +69,30 @@ function SummaryPage() {
         <div className="mb-10 flex flex-wrap items-end justify-between gap-4">
           <div>
             <span className="text-xs font-bold uppercase tracking-widest text-brand">
-              Clinician View
+              {t("summary.kicker")}
             </span>
             <h1 className="mt-2 text-3xl font-bold tracking-tight sm:text-4xl">
-              Consultation Summary
+              {t("summary.title")}
             </h1>
             <p className="mt-2 text-sm text-slate-500">
-              Case {caseId} · Submitted {created.toLocaleString()}
+              {t("summary.caseLabel")} {caseId} · {t("summary.submitted")}{" "}
+              {created.toLocaleString(locale === "ar" ? "ar-EG" : "en-US")}
             </p>
           </div>
           <div className="rounded-full bg-emerald-50 px-3 py-1 text-[11px] font-semibold uppercase tracking-widest text-emerald-700 ring-1 ring-emerald-700/10">
-            Ready for review
+            {t("summary.ready")}
           </div>
         </div>
 
         <div className="grid gap-6 md:grid-cols-3">
-          {/* Main column */}
           <div className="space-y-6 md:col-span-2">
             <Card>
-              <CardLabel>Chief Complaint</CardLabel>
+              <CardLabel>{t("summary.chiefComplaint")}</CardLabel>
               <p className="mt-2 text-lg font-semibold text-slate-900">{summary.chiefComplaint}</p>
             </Card>
 
             <Card>
-              <CardLabel>Clinical Narrative</CardLabel>
+              <CardLabel>{t("summary.narrative")}</CardLabel>
               <p className="mt-3 whitespace-pre-wrap leading-relaxed text-slate-800">
                 {summary.clinicalNotes}
               </p>
@@ -101,25 +100,24 @@ function SummaryPage() {
 
             <div className="grid grid-cols-1 gap-6 sm:grid-cols-2">
               <Card subtle>
-                <CardLabel>Duration</CardLabel>
+                <CardLabel>{t("summary.duration")}</CardLabel>
                 <div className="mt-2 text-2xl font-bold text-slate-900">{summary.duration}</div>
-                <p className="mt-1 text-xs text-slate-500">Reported onset</p>
+                <p className="mt-1 text-xs text-slate-500">{t("summary.durationHint")}</p>
               </Card>
               <Card subtle>
-                <CardLabel>Severity</CardLabel>
+                <CardLabel>{t("summary.severity")}</CardLabel>
                 <div className="mt-2 text-2xl font-bold text-brand">{summary.severity}</div>
-                <p className="mt-1 text-xs text-slate-500">Patient-reported</p>
+                <p className="mt-1 text-xs text-slate-500">{t("summary.severityHint")}</p>
               </Card>
             </div>
           </div>
 
-          {/* Sidebar */}
           <div className="space-y-6">
             <Card>
-              <CardLabel>Flagged Symptoms</CardLabel>
+              <CardLabel>{t("summary.flagged")}</CardLabel>
               <ul className="mt-4 space-y-3">
                 {summary.symptoms.length === 0 && (
-                  <li className="text-sm text-slate-500">Not reported</li>
+                  <li className="text-sm text-slate-500">{t("summary.notReported")}</li>
                 )}
                 {summary.symptoms.map((s, i) => (
                   <li key={`${s}-${i}`} className="flex items-center gap-3">
@@ -131,26 +129,26 @@ function SummaryPage() {
             </Card>
 
             <Card>
-              <CardLabel>Recommended Specialty</CardLabel>
+              <CardLabel>{t("summary.specialty")}</CardLabel>
               <p className="mt-2 text-lg font-semibold text-slate-900">
                 {summary.recommendedSpecialty}
               </p>
             </Card>
 
             <Card>
-              <CardLabel>Risk Level</CardLabel>
+              <CardLabel>{t("summary.risk")}</CardLabel>
               <p className={`mt-2 text-2xl font-bold ${riskColor}`}>{summary.riskLevel}</p>
             </Card>
 
             <div className="space-y-3">
               <button className="w-full rounded-xl bg-slate-900 py-3 text-sm font-bold text-white transition-colors hover:bg-slate-800">
-                Approve & Contact Patient
+                {t("summary.approve")}
               </button>
               <Link
                 to="/consultation"
                 className="block w-full rounded-xl border border-slate-200 bg-white py-3 text-center text-sm font-semibold text-slate-700 transition-colors hover:bg-slate-50"
               >
-                Start New Intake
+                {t("summary.newIntake")}
               </Link>
             </div>
           </div>

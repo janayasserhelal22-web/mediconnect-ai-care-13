@@ -43,12 +43,14 @@ function ConsultationPage() {
     [t],
   );
 
+  const { locale } = useI18n();
   const { messages, sendMessage, status } = useChat({
     id: "connectcare-intake",
     messages: [initialMessage],
-    transport: new DefaultChatTransport({ api: "/api/chat" }),
+    transport: new DefaultChatTransport({ api: "/api/chat", body: { locale } }),
     onError: (e) => setError(e.message || t("consultation.errorGeneric")),
   });
+
 
   const isStreaming = status === "submitted" || status === "streaming";
 

@@ -25,7 +25,7 @@ function partsToText(message: UIMessage): string {
 }
 
 function ConsultationPage() {
-  const { t, dir } = useI18n();
+  const { t, dir, locale } = useI18n();
   const navigate = useNavigate();
   const generate = useServerFn(generateSummary);
   const [input, setInput] = useState("");
@@ -43,13 +43,13 @@ function ConsultationPage() {
     [t],
   );
 
-  const { locale } = useI18n();
   const { messages, sendMessage, status } = useChat({
     id: "connectcare-intake",
     messages: [initialMessage],
     transport: new DefaultChatTransport({ api: "/api/chat", body: { locale } }),
     onError: (e) => setError(e.message || t("consultation.errorGeneric")),
   });
+
 
 
   const isStreaming = status === "submitted" || status === "streaming";

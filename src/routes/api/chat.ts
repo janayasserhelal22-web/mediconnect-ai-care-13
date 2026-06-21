@@ -22,7 +22,8 @@ export const Route = createFileRoute("/api/chat")({
   server: {
     handlers: {
       POST: async ({ request }) => {
-        const { messages } = (await request.json()) as { messages: unknown };
+        const body = (await request.json()) as { messages?: unknown; locale?: string };
+        const { messages, locale } = body;
         if (!Array.isArray(messages)) {
           return new Response("Messages required", { status: 400 });
         }
@@ -30,12 +31,18 @@ export const Route = createFileRoute("/api/chat")({
         const key = process.env.LOVABLE_API_KEY;
         if (!key) return new Response("Missing LOVABLE_API_KEY", { status: 500 });
 
+        const langInstruction =
+          locale === "ar"
+            ? "\n\nIMPORTANT: Respond ONLY in Modern Standard Arabic (العربية الفصحى). Keep tone warm and professional."
+            : "\n\nIMPORTANT: Respond in English.";
+
         const gateway = createLovableAiGatewayProvider(key);
         const result = streamText({
           model: gateway("google/gemini-3-flash-preview"),
-          system: SYSTEM_PROMPT,
+          system: SYSTEM_PROMPT + langInstruction,
           messages: await convertToModelMessages(messages as UIMessage[]),
         });
+
 
         return result.toUIMessageStreamResponse({
           originalMessages: messages as UIMessage[],

@@ -9,9 +9,7 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
-import { Route as SummaryRouteImport } from './routes/summary'
 import { Route as StartRouteImport } from './routes/start'
-import { Route as ConsultationRouteImport } from './routes/consultation'
 import { Route as AuthRouteImport } from './routes/auth'
 import { Route as AuthenticatedRouteImport } from './routes/_authenticated'
 import { Route as IndexRouteImport } from './routes/index'
@@ -24,19 +22,9 @@ import { Route as AuthenticatedDoctorsIdRouteImport } from './routes/_authentica
 import { Route as AuthenticatedConsultationIdRouteImport } from './routes/_authenticated/consultation.$id'
 import { Route as AuthenticatedDoctorCaseIdRouteImport } from './routes/_authenticated/doctor.case.$id'
 
-const SummaryRoute = SummaryRouteImport.update({
-  id: '/summary',
-  path: '/summary',
-  getParentRoute: () => rootRouteImport,
-} as any)
 const StartRoute = StartRouteImport.update({
   id: '/start',
   path: '/start',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const ConsultationRoute = ConsultationRouteImport.update({
-  id: '/consultation',
-  path: '/consultation',
   getParentRoute: () => rootRouteImport,
 } as any)
 const AuthRoute = AuthRouteImport.update({
@@ -99,9 +87,7 @@ const AuthenticatedDoctorCaseIdRoute =
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/auth': typeof AuthRoute
-  '/consultation': typeof ConsultationRoute
   '/start': typeof StartRoute
-  '/summary': typeof SummaryRoute
   '/doctor': typeof AuthenticatedDoctorRouteWithChildren
   '/history': typeof AuthenticatedHistoryRoute
   '/api/chat': typeof ApiChatRoute
@@ -114,9 +100,7 @@ export interface FileRoutesByFullPath {
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/auth': typeof AuthRoute
-  '/consultation': typeof ConsultationRoute
   '/start': typeof StartRoute
-  '/summary': typeof SummaryRoute
   '/doctor': typeof AuthenticatedDoctorRouteWithChildren
   '/history': typeof AuthenticatedHistoryRoute
   '/api/chat': typeof ApiChatRoute
@@ -131,9 +115,7 @@ export interface FileRoutesById {
   '/': typeof IndexRoute
   '/_authenticated': typeof AuthenticatedRouteWithChildren
   '/auth': typeof AuthRoute
-  '/consultation': typeof ConsultationRoute
   '/start': typeof StartRoute
-  '/summary': typeof SummaryRoute
   '/_authenticated/doctor': typeof AuthenticatedDoctorRouteWithChildren
   '/_authenticated/history': typeof AuthenticatedHistoryRoute
   '/api/chat': typeof ApiChatRoute
@@ -148,9 +130,7 @@ export interface FileRouteTypes {
   fullPaths:
     | '/'
     | '/auth'
-    | '/consultation'
     | '/start'
-    | '/summary'
     | '/doctor'
     | '/history'
     | '/api/chat'
@@ -163,9 +143,7 @@ export interface FileRouteTypes {
   to:
     | '/'
     | '/auth'
-    | '/consultation'
     | '/start'
-    | '/summary'
     | '/doctor'
     | '/history'
     | '/api/chat'
@@ -179,9 +157,7 @@ export interface FileRouteTypes {
     | '/'
     | '/_authenticated'
     | '/auth'
-    | '/consultation'
     | '/start'
-    | '/summary'
     | '/_authenticated/doctor'
     | '/_authenticated/history'
     | '/api/chat'
@@ -196,33 +172,17 @@ export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   AuthenticatedRoute: typeof AuthenticatedRouteWithChildren
   AuthRoute: typeof AuthRoute
-  ConsultationRoute: typeof ConsultationRoute
   StartRoute: typeof StartRoute
-  SummaryRoute: typeof SummaryRoute
   ApiChatRoute: typeof ApiChatRoute
 }
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
-    '/summary': {
-      id: '/summary'
-      path: '/summary'
-      fullPath: '/summary'
-      preLoaderRoute: typeof SummaryRouteImport
-      parentRoute: typeof rootRouteImport
-    }
     '/start': {
       id: '/start'
       path: '/start'
       fullPath: '/start'
       preLoaderRoute: typeof StartRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/consultation': {
-      id: '/consultation'
-      path: '/consultation'
-      fullPath: '/consultation'
-      preLoaderRoute: typeof ConsultationRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/auth': {
@@ -342,9 +302,7 @@ const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AuthenticatedRoute: AuthenticatedRouteWithChildren,
   AuthRoute: AuthRoute,
-  ConsultationRoute: ConsultationRoute,
   StartRoute: StartRoute,
-  SummaryRoute: SummaryRoute,
   ApiChatRoute: ApiChatRoute,
 }
 export const routeTree = rootRouteImport

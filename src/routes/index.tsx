@@ -43,7 +43,7 @@ function Landing() {
           <p className="mx-auto mt-6 max-w-xl text-lg text-slate-600">{t("home.heroSubtitle")}</p>
           <div className="mt-10 flex flex-col items-center justify-center gap-4 sm:flex-row">
             <Link
-              to="/consultation"
+              to="/start"
               className="w-full rounded-full bg-brand px-8 py-4 text-base font-semibold text-white shadow-brand transition-transform hover:scale-[1.02] sm:w-auto"
             >
               {t("home.ctaPrimary")}
@@ -138,7 +138,7 @@ function Landing() {
           <h2 className="text-3xl font-bold text-white">{t("footer.title")}</h2>
           <p className="mt-4 text-slate-400">{t("footer.subtitle")}</p>
           <Link
-            to="/consultation"
+            to="/start"
             className="mt-10 inline-block rounded-full bg-brand px-10 py-5 text-lg font-bold text-white shadow-2xl transition-transform hover:scale-105"
           >
             {t("footer.cta")}

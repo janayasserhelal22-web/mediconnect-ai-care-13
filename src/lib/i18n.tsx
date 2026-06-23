@@ -420,7 +420,7 @@ type I18nContextValue = {
   dir: "rtl" | "ltr";
   setLocale: (l: Locale) => void;
   toggle: () => void;
-  t: (key: string) => string;
+  t: (key: string, vars?: Record<string, string | number>) => string;
 };
 
 const I18nContext = createContext<I18nContextValue | null>(null);

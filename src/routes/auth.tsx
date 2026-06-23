@@ -3,7 +3,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/lib/auth";
 import { useI18n } from "@/lib/i18n";
 import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { toast } from "sonner";
 import { z } from "zod";
 
@@ -18,6 +18,38 @@ export const Route = createFileRoute("/auth")({
   component: AuthPage,
 });
 
+type AuthErrorShape = { message?: string; code?: string; status?: number };
+
+function mapAuthError(
+  err: unknown,
+  t: (k: string, v?: Record<string, string | number>) => string,
+): { message: string; cooldown: number } {
+  const e = (err ?? {}) as AuthErrorShape;
+  const msg = e.message ?? "";
+  const code = e.code ?? "";
+  const status = e.status ?? 0;
+
+  // Rate limit (Supabase: 429 + "after N seconds")
+  if (status === 429 || code === "over_email_send_rate_limit" || /rate limit/i.test(msg)) {
+    const match = /(\d+)\s*second/i.exec(msg);
+    const seconds = match ? Number(match[1]) : 60;
+    return { message: t("auth.errorRateLimit", { seconds }), cooldown: seconds };
+  }
+  if (code === "invalid_credentials" || /invalid login/i.test(msg)) {
+    return { message: t("auth.errorInvalidCredentials"), cooldown: 0 };
+  }
+  if (code === "email_not_confirmed" || /not confirmed/i.test(msg)) {
+    return { message: t("auth.errorEmailNotConfirmed"), cooldown: 0 };
+  }
+  if (code === "user_already_exists" || /already registered|already exists/i.test(msg)) {
+    return { message: t("auth.errorUserExists"), cooldown: 0 };
+  }
+  if (code === "weak_password" || /password/i.test(msg) && /weak|short|6 char/i.test(msg)) {
+    return { message: t("auth.errorWeakPassword"), cooldown: 0 };
+  }
+  return { message: msg || t("auth.errorGeneric"), cooldown: 0 };
+}
+
 function AuthPage() {
   const { t, locale } = useI18n();
   const { role: searchRole, mode } = Route.useSearch();
@@ -27,11 +59,18 @@ function AuthPage() {
   useEffect(() => {
     if (loading) return;
     if (user && userRole) {
-      navigate({ to: userRole === "doctor" ? "/doctor" : "/intake/new" });
+      navigate({
+        to: userRole === "doctor" ? "/doctor" : "/intake/$id",
+        params: userRole === "doctor" ? undefined : { id: "new" },
+        replace: true,
+      });
     }
   }, [user, userRole, loading, navigate]);
 
   const [submitting, setSubmitting] = useState(false);
+  const [cooldown, setCooldown] = useState(0);
+  const [sentToEmail, setSentToEmail] = useState<string | null>(null);
+  const cooldownTimer = useRef<ReturnType<typeof setInterval> | null>(null);
   const [fullName, setFullName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -43,12 +82,33 @@ function AuthPage() {
   const isSignUp = mode === "signup";
   const isDoctor = searchRole === "doctor";
 
+  useEffect(() => {
+    return () => {
+      if (cooldownTimer.current) clearInterval(cooldownTimer.current);
+    };
+  }, []);
+
+  function startCooldown(seconds: number) {
+    setCooldown(seconds);
+    if (cooldownTimer.current) clearInterval(cooldownTimer.current);
+    cooldownTimer.current = setInterval(() => {
+      setCooldown((s) => {
+        if (s <= 1) {
+          if (cooldownTimer.current) clearInterval(cooldownTimer.current);
+          return 0;
+        }
+        return s - 1;
+      });
+    }, 1000);
+  }
+
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
+    if (submitting || cooldown > 0) return;
     setSubmitting(true);
     try {
       if (isSignUp) {
-        const { error } = await supabase.auth.signUp({
+        const { data, error } = await supabase.auth.signUp({
           email,
           password,
           options: {
@@ -65,16 +125,59 @@ function AuthPage() {
           },
         });
         if (error) throw error;
+        // If email confirmation is required, no session is returned.
+        if (!data.session) {
+          setSentToEmail(email);
+          // Soft cooldown to prevent immediate re-submit (Supabase 60s limit).
+          startCooldown(60);
+        }
+        // If session exists, useEffect above will redirect after role loads.
       } else {
         const { error } = await supabase.auth.signInWithPassword({ email, password });
         if (error) throw error;
       }
     } catch (err) {
-      toast.error(err instanceof Error ? err.message : t("auth.errorGeneric"));
+      const { message, cooldown: cd } = mapAuthError(err, t);
+      toast.error(message);
+      if (cd > 0) startCooldown(cd);
     } finally {
       setSubmitting(false);
     }
   }
+
+  if (sentToEmail) {
+    return (
+      <div className="flex min-h-screen flex-col bg-slate-50">
+        <SiteHeader />
+        <main className="flex flex-1 items-center justify-center px-4 py-10 sm:py-16">
+          <div className="w-full max-w-md rounded-3xl border border-slate-200 bg-white p-8 text-center shadow-sm">
+            <div className="mx-auto mb-4 grid size-12 place-items-center rounded-full bg-brand/10 text-brand">
+              ✉
+            </div>
+            <h1 className="text-2xl font-bold tracking-tight">{t("auth.checkEmailTitle")}</h1>
+            <p className="mt-3 text-sm text-slate-600">
+              {t("auth.checkEmailBody", { email: sentToEmail })}
+            </p>
+            <Link
+              to="/auth"
+              search={{ role: searchRole, mode: "signin" }}
+              onClick={() => setSentToEmail(null)}
+              className="mt-6 inline-block rounded-xl bg-brand px-6 py-3 text-sm font-bold text-white hover:bg-brand-dark"
+            >
+              {t("auth.backToSignIn")}
+            </Link>
+          </div>
+        </main>
+      </div>
+    );
+  }
+
+  const disabled = submitting || cooldown > 0;
+  const submitLabel = submitting
+    ? t("auth.submitting")
+    : cooldown > 0
+      ? t("auth.cooldown", { seconds: cooldown })
+      : t("auth.submit");
 
   return (
     <div className="flex min-h-screen flex-col bg-slate-50">
@@ -142,12 +245,7 @@ function AuthPage() {
                     onChange={setSpecialty}
                     required
                   />
-                  <Field
-                    label={t("auth.bio")}
-                    value={bio}
-                    onChange={setBio}
-                    textarea
-                  />
+                  <Field label={t("auth.bio")} value={bio} onChange={setBio} textarea />
                   <Field
                     label={t("auth.fee")}
                     type="number"
@@ -160,10 +258,10 @@ function AuthPage() {
 
               <button
                 type="submit"
-                disabled={submitting}
+                disabled={disabled}
                 className="w-full rounded-xl bg-brand py-3 text-sm font-bold text-white transition-colors hover:bg-brand-dark disabled:opacity-60"
               >
-                {submitting ? t("auth.submitting") : t("auth.submit")}
+                {submitLabel}
               </button>
             </form>
 

@@ -98,6 +98,15 @@ const ar: Dict = {
   "auth.role.patient": "مريض",
   "auth.role.doctor": "طبيب",
   "auth.errorGeneric": "حدث خطأ ما، حاول مرة أخرى.",
+  "auth.errorRateLimit": "لقد أرسلت طلبات كثيرة. يرجى الانتظار {seconds} ثانية ثم المحاولة مجدداً.",
+  "auth.errorInvalidCredentials": "البريد الإلكتروني أو كلمة المرور غير صحيحة.",
+  "auth.errorEmailNotConfirmed": "لم يتم تأكيد بريدك الإلكتروني بعد. تحقق من صندوق الوارد.",
+  "auth.errorUserExists": "يوجد حساب بهذا البريد بالفعل. سجّل الدخول بدلاً من ذلك.",
+  "auth.errorWeakPassword": "كلمة المرور ضعيفة. استخدم 6 أحرف على الأقل.",
+  "auth.checkEmailTitle": "تحقق من بريدك الإلكتروني",
+  "auth.checkEmailBody": "أرسلنا رابط تأكيد إلى {email}. اضغط الرابط لتفعيل الحساب ثم سجّل الدخول.",
+  "auth.backToSignIn": "العودة لتسجيل الدخول",
+  "auth.cooldown": "أعد المحاولة بعد {seconds} ث",
 
   // Intake
   "intake.metaTitle": "تقييم بالذكاء الاصطناعي — ميديكونكت",
@@ -292,6 +301,15 @@ const en: Dict = {
   "auth.role.patient": "Patient",
   "auth.role.doctor": "Doctor",
   "auth.errorGeneric": "Something went wrong. Try again.",
+  "auth.errorRateLimit": "Too many attempts. Please wait {seconds}s and try again.",
+  "auth.errorInvalidCredentials": "Incorrect email or password.",
+  "auth.errorEmailNotConfirmed": "Your email isn't confirmed yet. Check your inbox.",
+  "auth.errorUserExists": "An account with this email already exists. Sign in instead.",
+  "auth.errorWeakPassword": "Password is too weak. Use at least 6 characters.",
+  "auth.checkEmailTitle": "Check your email",
+  "auth.checkEmailBody": "We sent a confirmation link to {email}. Click it to activate your account, then sign in.",
+  "auth.backToSignIn": "Back to sign in",
+  "auth.cooldown": "Retry in {seconds}s",
 
   "intake.metaTitle": "AI Assessment — MediConnect",
   "intake.kicker": "Smart Intake",
@@ -402,7 +420,7 @@ type I18nContextValue = {
   dir: "rtl" | "ltr";
   setLocale: (l: Locale) => void;
   toggle: () => void;
-  t: (key: string) => string;
+  t: (key: string, vars?: Record<string, string | number>) => string;
 };
 
 const I18nContext = createContext<I18nContextValue | null>(null);
@@ -442,7 +460,11 @@ export function I18nProvider({ children }: { children: ReactNode }) {
       dir: locale === "ar" ? "rtl" : "ltr",
       setLocale,
       toggle: () => setLocale(locale === "ar" ? "en" : "ar"),
-      t: (key: string) => dict[key] ?? translations.en[key] ?? key,
+      t: (key: string, vars?: Record<string, string | number>) => {
+        const raw = dict[key] ?? translations.en[key] ?? key;
+        if (!vars) return raw;
+        return raw.replace(/\{(\w+)\}/g, (_, k) => (vars[k] != null ? String(vars[k]) : `{${k}}`));
+      },
     };
   }, [locale, setLocale]);
 

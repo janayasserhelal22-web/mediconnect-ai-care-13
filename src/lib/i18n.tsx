@@ -460,7 +460,11 @@ export function I18nProvider({ children }: { children: ReactNode }) {
       dir: locale === "ar" ? "rtl" : "ltr",
       setLocale,
       toggle: () => setLocale(locale === "ar" ? "en" : "ar"),
-      t: (key: string) => dict[key] ?? translations.en[key] ?? key,
+      t: (key: string, vars?: Record<string, string | number>) => {
+        const raw = dict[key] ?? translations.en[key] ?? key;
+        if (!vars) return raw;
+        return raw.replace(/\{(\w+)\}/g, (_, k) => (vars[k] != null ? String(vars[k]) : `{${k}}`));
+      },
     };
   }, [locale, setLocale]);
 

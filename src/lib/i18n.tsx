@@ -98,6 +98,15 @@ const ar: Dict = {
   "auth.role.patient": "مريض",
   "auth.role.doctor": "طبيب",
   "auth.errorGeneric": "حدث خطأ ما، حاول مرة أخرى.",
+  "auth.errorRateLimit": "لقد أرسلت طلبات كثيرة. يرجى الانتظار {seconds} ثانية ثم المحاولة مجدداً.",
+  "auth.errorInvalidCredentials": "البريد الإلكتروني أو كلمة المرور غير صحيحة.",
+  "auth.errorEmailNotConfirmed": "لم يتم تأكيد بريدك الإلكتروني بعد. تحقق من صندوق الوارد.",
+  "auth.errorUserExists": "يوجد حساب بهذا البريد بالفعل. سجّل الدخول بدلاً من ذلك.",
+  "auth.errorWeakPassword": "كلمة المرور ضعيفة. استخدم 6 أحرف على الأقل.",
+  "auth.checkEmailTitle": "تحقق من بريدك الإلكتروني",
+  "auth.checkEmailBody": "أرسلنا رابط تأكيد إلى {email}. اضغط الرابط لتفعيل الحساب ثم سجّل الدخول.",
+  "auth.backToSignIn": "العودة لتسجيل الدخول",
+  "auth.cooldown": "أعد المحاولة بعد {seconds} ث",
 
   // Intake
   "intake.metaTitle": "تقييم بالذكاء الاصطناعي — ميديكونكت",

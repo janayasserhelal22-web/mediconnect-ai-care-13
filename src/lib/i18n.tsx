@@ -151,6 +151,17 @@ const ar: Dict = {
   "review.notReported": "غير مذكور",
   "review.loading": "جارٍ تحميل التقرير…",
   "review.notFound": "التقرير غير موجود.",
+  "emergency.kicker": "تنبيه طوارئ",
+  "emergency.title": "قد تكون أعراضك طارئة",
+  "emergency.subtitle":
+    "بناءً على المحادثة، تشير الأعراض إلى احتمال وجود حالة طبية طارئة تتطلب رعاية فورية.",
+  "emergency.action": "اتصل بالطوارئ (٩٩٧ / ١١٢) أو توجّه فوراً إلى أقرب قسم طوارئ. لا تنتظر استشارة طبيب عبر التطبيق.",
+  "emergency.reasonsTitle": "العلامات التي تم رصدها",
+  "emergency.callButton": "اتصل بالطوارئ الآن",
+  "emergency.disclaimer":
+    "هذه المنصة ليست بديلاً عن خدمات الطوارئ. لا توفّر رعاية فورية أو تدخّلاً مباشراً.",
+  "emergency.ackLabel": "أؤكد أنني قرأت هذا التحذير وأفهم أنه يجب طلب رعاية طارئة فورية إذا كانت حالتي تتفاقم.",
+  "emergency.continueAnyway": "تابع إلى التقرير الطبي",
 
   // Doctors
   "doctors.metaTitle": "اختر طبيبك — ميديكونكت",
@@ -353,6 +364,19 @@ const en: Dict = {
   "review.notReported": "Not reported",
   "review.loading": "Loading report…",
   "review.notFound": "Report not found.",
+  "emergency.kicker": "Emergency alert",
+  "emergency.title": "Your symptoms may be an emergency",
+  "emergency.subtitle":
+    "Based on your conversation, your symptoms suggest a possible medical emergency that needs urgent care.",
+  "emergency.action":
+    "Call emergency services (911 / 112) or go to the nearest emergency department right now. Do not wait for an in-app doctor consultation.",
+  "emergency.reasonsTitle": "Red flags detected",
+  "emergency.callButton": "Call emergency services",
+  "emergency.disclaimer":
+    "This platform is not a substitute for emergency services. It cannot provide immediate care or intervention.",
+  "emergency.ackLabel":
+    "I have read this warning and understand I should seek immediate emergency care if my condition is worsening.",
+  "emergency.continueAnyway": "Continue to medical report",
 
   "doctors.metaTitle": "Choose your doctor — MediConnect",
   "doctors.kicker": "Available doctors",

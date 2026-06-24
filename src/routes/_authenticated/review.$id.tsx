@@ -69,11 +69,29 @@ function ReviewPage() {
         ? "bg-amber-50 text-amber-700 border-amber-200"
         : "bg-emerald-50 text-emerald-700 border-emerald-200";
 
+  const isEmergency = Boolean(data.is_emergency);
+  const emergencyReasons = (data.emergency_reasons as string[] | null) ?? [];
+  const showEmergencyDialog = isEmergency && !emergencyAcked;
+
   return (
     <div className="flex min-h-screen flex-col bg-slate-50">
       <SiteHeader />
+      {showEmergencyDialog && (
+        <EmergencyAlert reasons={emergencyReasons} onAcknowledge={handleAcknowledge} />
+      )}
       <main className="flex-1 px-4 py-10 sm:px-6 sm:py-14">
         <div className="mx-auto max-w-3xl">
+          {isEmergency && (
+            <div className="mb-6 flex items-start gap-3 rounded-2xl border-2 border-rose-300 bg-rose-50 p-4 sm:p-5">
+              <AlertTriangle className="mt-0.5 size-5 shrink-0 text-rose-600" aria-hidden />
+              <div className="space-y-1">
+                <div className="text-sm font-bold text-rose-800">{t("emergency.title")}</div>
+                <p className="text-xs leading-relaxed text-rose-700 sm:text-sm">
+                  {t("emergency.action")}
+                </p>
+              </div>
+            </div>
+          )}
           <div className="mb-8">
             <span className="text-xs font-bold uppercase tracking-widest text-brand">
               {t("review.kicker")}
@@ -83,6 +101,7 @@ function ReviewPage() {
             </h1>
             <p className="mt-2 text-slate-600">{t("review.subtitle")}</p>
           </div>
+
 
           <div className="space-y-5">
             <Card icon={<FileText className="size-4" />} title={t("review.chiefComplaint")}>

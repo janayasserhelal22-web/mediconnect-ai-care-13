@@ -67,10 +67,6 @@ function ReviewPage() {
   const emergencyReasons = (data.emergency_reasons as string[] | null) ?? [];
   const showEmergencyDialog = isEmergency && !emergencyAcked;
 
-  const isEmergency = Boolean(data.is_emergency);
-  const emergencyReasons = (data.emergency_reasons as string[] | null) ?? [];
-  const showEmergencyDialog = isEmergency && !emergencyAcked;
-
   return (
     <div className="flex min-h-screen flex-col bg-slate-50">
       <SiteHeader />

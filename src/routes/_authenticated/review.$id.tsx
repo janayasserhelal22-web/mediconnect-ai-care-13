@@ -1,4 +1,5 @@
 import { EmergencyAlert } from "@/components/EmergencyAlert";
+import { RiskMeter } from "@/components/RiskScore";
 import { SiteHeader } from "@/components/SiteHeader";
 import { supabase } from "@/integrations/supabase/client";
 import { useI18n } from "@/lib/i18n";
@@ -62,13 +63,6 @@ function ReviewPage() {
     );
   }
 
-  const riskColor =
-    data.risk_level === "High"
-      ? "bg-rose-50 text-rose-700 border-rose-200"
-      : data.risk_level === "Moderate"
-        ? "bg-amber-50 text-amber-700 border-amber-200"
-        : "bg-emerald-50 text-emerald-700 border-emerald-200";
-
   const isEmergency = Boolean(data.is_emergency);
   const emergencyReasons = (data.emergency_reasons as string[] | null) ?? [];
   const showEmergencyDialog = isEmergency && !emergencyAcked;
@@ -121,12 +115,8 @@ function ReviewPage() {
                   {data.severity || t("review.notReported")}
                 </p>
               </Card>
-              <Card icon={<AlertCircle className="size-4" />} title={t("review.risk")}>
-                <span
-                  className={`inline-flex rounded-full border px-3 py-1 text-xs font-bold ${riskColor}`}
-                >
-                  {data.risk_level || t("review.notReported")}
-                </span>
+              <Card icon={<AlertCircle className="size-4" />} title={t("review.riskScore")}>
+                <RiskMeter level={data.risk_level} score={data.risk_score} />
               </Card>
             </div>
 

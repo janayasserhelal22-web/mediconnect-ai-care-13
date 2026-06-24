@@ -177,6 +177,7 @@ export type Database = {
           primary_specialty: string | null
           reasoning: string | null
           risk_level: string | null
+          risk_score: number | null
           secondary_specialty: string | null
           severity: string | null
           symptoms: string[] | null
@@ -195,6 +196,7 @@ export type Database = {
           primary_specialty?: string | null
           reasoning?: string | null
           risk_level?: string | null
+          risk_score?: number | null
           secondary_specialty?: string | null
           severity?: string | null
           symptoms?: string[] | null
@@ -213,6 +215,7 @@ export type Database = {
           primary_specialty?: string | null
           reasoning?: string | null
           risk_level?: string | null
+          risk_score?: number | null
           secondary_specialty?: string | null
           severity?: string | null
           symptoms?: string[] | null

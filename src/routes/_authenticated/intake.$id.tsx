@@ -121,6 +121,7 @@ function IntakePage() {
         duration: review.duration,
         severity: review.severity,
         risk_level: review.riskLevel,
+        risk_score: review.riskScore,
         clinical_notes: review.clinicalNotes,
         ai_summary: review.aiSummary,
         primary_specialty: review.primarySpecialty,

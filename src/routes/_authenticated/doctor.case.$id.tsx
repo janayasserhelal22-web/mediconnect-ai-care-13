@@ -130,10 +130,15 @@ function DoctorCasePage() {
               </div>
               {review ? (
                 <dl className="space-y-3 text-sm">
+                  <div className="rounded-xl border border-slate-200 bg-slate-50 p-3">
+                    <dt className="mb-2 text-xs font-semibold text-slate-500">
+                      {t("review.riskScore")}
+                    </dt>
+                    <RiskMeter level={review.risk_level} score={review.risk_score} />
+                  </div>
                   <Row label={t("review.chiefComplaint")} value={review.chief_complaint} />
                   <Row label={t("review.duration")} value={review.duration} />
                   <Row label={t("review.severity")} value={review.severity} />
-                  <Row label={t("review.risk")} value={review.risk_level} />
                   {review.symptoms && review.symptoms.length > 0 && (
                     <div>
                       <dt className="text-xs font-semibold text-slate-500">

@@ -1,3 +1,4 @@
+import { RiskMeter } from "@/components/RiskScore";
 import { SiteHeader } from "@/components/SiteHeader";
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/lib/auth";

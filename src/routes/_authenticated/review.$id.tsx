@@ -115,12 +115,8 @@ function ReviewPage() {
                   {data.severity || t("review.notReported")}
                 </p>
               </Card>
-              <Card icon={<AlertCircle className="size-4" />} title={t("review.risk")}>
-                <span
-                  className={`inline-flex rounded-full border px-3 py-1 text-xs font-bold ${riskColor}`}
-                >
-                  {data.risk_level || t("review.notReported")}
-                </span>
+              <Card icon={<AlertCircle className="size-4" />} title={t("review.riskScore")}>
+                <RiskMeter level={data.risk_level} score={data.risk_score} />
               </Card>
             </div>
 

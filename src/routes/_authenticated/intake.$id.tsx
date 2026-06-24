@@ -127,6 +127,8 @@ function IntakePage() {
         secondary_specialty: review.secondarySpecialty,
         alternative_specialty: review.alternativeSpecialty,
         reasoning: review.reasoning,
+        is_emergency: review.isEmergency,
+        emergency_reasons: review.emergencyReasons,
       });
       if (reviewErr) throw reviewErr;
 

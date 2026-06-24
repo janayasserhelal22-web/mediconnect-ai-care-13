@@ -1,4 +1,5 @@
 import { EmergencyAlert } from "@/components/EmergencyAlert";
+import { RiskMeter } from "@/components/RiskScore";
 import { SiteHeader } from "@/components/SiteHeader";
 import { supabase } from "@/integrations/supabase/client";
 import { useI18n } from "@/lib/i18n";

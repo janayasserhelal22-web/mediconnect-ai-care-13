@@ -1,9 +1,11 @@
+import { EmergencyAlert } from "@/components/EmergencyAlert";
 import { SiteHeader } from "@/components/SiteHeader";
 import { supabase } from "@/integrations/supabase/client";
 import { useI18n } from "@/lib/i18n";
 import { useQuery } from "@tanstack/react-query";
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { Activity, AlertCircle, ArrowLeft, Clock, FileText, Stethoscope } from "lucide-react";
+import { Activity, AlertCircle, AlertTriangle, ArrowLeft, Clock, FileText, Stethoscope } from "lucide-react";
+import { useEffect, useState } from "react";
 
 export const Route = createFileRoute("/_authenticated/review/$id")({
   head: () => ({ meta: [{ title: "Medical Review — MediConnect" }] }),

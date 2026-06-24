@@ -364,6 +364,19 @@ const en: Dict = {
   "review.notReported": "Not reported",
   "review.loading": "Loading report…",
   "review.notFound": "Report not found.",
+  "emergency.kicker": "Emergency alert",
+  "emergency.title": "Your symptoms may be an emergency",
+  "emergency.subtitle":
+    "Based on your conversation, your symptoms suggest a possible medical emergency that needs urgent care.",
+  "emergency.action":
+    "Call emergency services (911 / 112) or go to the nearest emergency department right now. Do not wait for an in-app doctor consultation.",
+  "emergency.reasonsTitle": "Red flags detected",
+  "emergency.callButton": "Call emergency services",
+  "emergency.disclaimer":
+    "This platform is not a substitute for emergency services. It cannot provide immediate care or intervention.",
+  "emergency.ackLabel":
+    "I have read this warning and understand I should seek immediate emergency care if my condition is worsening.",
+  "emergency.continueAnyway": "Continue to medical report",
 
   "doctors.metaTitle": "Choose your doctor — MediConnect",
   "doctors.kicker": "Available doctors",

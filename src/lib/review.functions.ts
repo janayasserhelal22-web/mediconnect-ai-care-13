@@ -15,6 +15,8 @@ const ReviewSchema = z.object({
   secondarySpecialty: z.string(),
   alternativeSpecialty: z.string(),
   reasoning: z.string(),
+  isEmergency: z.boolean(),
+  emergencyReasons: z.array(z.string()),
 });
 
 export type MedicalReview = z.infer<typeof ReviewSchema>;

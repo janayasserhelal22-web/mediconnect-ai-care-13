@@ -15,6 +15,15 @@ export const Route = createFileRoute("/_authenticated/review/$id")({
 function ReviewPage() {
   const { id } = Route.useParams();
   const { t, dir } = useI18n();
+  const ackKey = `emergency-ack:${id}`;
+  const [emergencyAcked, setEmergencyAcked] = useState(false);
+
+  useEffect(() => {
+    if (typeof window !== "undefined" && window.localStorage.getItem(ackKey) === "1") {
+      setEmergencyAcked(true);
+    }
+  }, [ackKey]);
+
   const { data, isLoading } = useQuery({
     queryKey: ["review", id],
     queryFn: async () => {
@@ -27,6 +36,12 @@ function ReviewPage() {
       return data;
     },
   });
+
+  const handleAcknowledge = () => {
+    if (typeof window !== "undefined") window.localStorage.setItem(ackKey, "1");
+    setEmergencyAcked(true);
+  };
+
 
   if (isLoading) {
     return (

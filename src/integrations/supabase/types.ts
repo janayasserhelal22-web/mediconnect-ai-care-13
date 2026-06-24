@@ -171,7 +171,9 @@ export type Database = {
           consultation_id: string
           created_at: string
           duration: string | null
+          emergency_reasons: string[]
           id: string
+          is_emergency: boolean
           primary_specialty: string | null
           reasoning: string | null
           risk_level: string | null
@@ -187,7 +189,9 @@ export type Database = {
           consultation_id: string
           created_at?: string
           duration?: string | null
+          emergency_reasons?: string[]
           id?: string
+          is_emergency?: boolean
           primary_specialty?: string | null
           reasoning?: string | null
           risk_level?: string | null
@@ -203,7 +207,9 @@ export type Database = {
           consultation_id?: string
           created_at?: string
           duration?: string | null
+          emergency_reasons?: string[]
           id?: string
+          is_emergency?: boolean
           primary_specialty?: string | null
           reasoning?: string | null
           risk_level?: string | null

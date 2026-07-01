@@ -402,6 +402,8 @@ const en: Dict = {
   "doctors.busy": "Busy",
   "doctors.noResults": "No doctors available in this specialty right now.",
   "doctors.viewAll": "View all",
+  "doctors.fallbackNotice": "No specialists available in the recommended specialties right now. Showing available doctors from related specialties.",
+  "doctors.emergencyFallback": "This is an emergency case. If no emergency doctor responds within minutes, call emergency services immediately (911 / 997).",
 
   "consult.metaTitle": "Consultation — MediConnect",
   "consult.title": "Doctor consultation",

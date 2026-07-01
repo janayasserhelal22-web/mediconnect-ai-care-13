@@ -121,6 +121,17 @@ function DoctorsPage() {
             )}
           </div>
 
+          {isEmergency && (
+            <div className="mb-6 rounded-2xl border-2 border-rose-300 bg-rose-50 p-4 text-sm font-medium text-rose-900">
+              {t("doctors.emergencyFallback")}
+            </div>
+          )}
+          {isFallback && !isEmergency && (
+            <div className="mb-6 rounded-2xl border border-amber-300 bg-amber-50 p-4 text-sm font-medium text-amber-900">
+              {t("doctors.fallbackNotice")}
+            </div>
+          )}
+
           {isLoading ? (
             <p className="text-slate-500">…</p>
           ) : doctors && doctors.length > 0 ? (

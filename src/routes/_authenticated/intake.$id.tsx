@@ -24,62 +24,160 @@ function partsToText(message: UIMessage): string {
 
 function IntakePage() {
   const { id } = Route.useParams();
-  const { t, dir, locale } = useI18n();
+  const { t, locale } = useI18n();
   const { user } = useAuth();
   const navigate = useNavigate();
-  const generate = useServerFn(generateReview);
-  const [consultationId, setConsultationId] = useState<string | null>(id === "new" ? null : id);
+  const [consultationId, setConsultationId] = useState<string | null>(
+    id === "new" ? null : id,
+  );
+  const [initialMessages, setInitialMessages] = useState<UIMessage[] | null>(null);
   const [bootstrapping, setBootstrapping] = useState(true);
+  const welcomeText = t("intake.welcome");
+
+  // Bootstrap: create consultation if "new", then load existing transcript.
+  useEffect(() => {
+    if (!user) return;
+    let cancelled = false;
+    (async () => {
+      let cid = id === "new" ? null : id;
+      if (cid === null) {
+        const { data, error } = await supabase
+          .from("consultations")
+          .insert({ patient_id: user.id, status: "intake", locale })
+          .select("id")
+          .single();
+        if (error) {
+          if (!cancelled) {
+            toast.error(error.message);
+            setBootstrapping(false);
+          }
+          return;
+        }
+        cid = data.id;
+        if (!cancelled) {
+          navigate({ to: "/intake/$id", params: { id: cid }, replace: true });
+        }
+      }
+
+      // Load existing transcript for this consultation.
+      const { data: rows } = await supabase
+        .from("intake_messages")
+        .select("id,role,content,created_at")
+        .eq("consultation_id", cid)
+        .order("created_at", { ascending: true });
+
+      if (cancelled) return;
+
+      const restored: UIMessage[] = (rows ?? [])
+        .filter((r) => r.role === "user" || r.role === "assistant")
+        .map((r) => ({
+          id: r.id,
+          role: r.role as "user" | "assistant",
+          parts: [{ type: "text", text: r.content }],
+        }));
+
+      // Always show a welcome bubble at the top (transient, not persisted).
+      const withWelcome: UIMessage[] = [
+        {
+          id: "welcome",
+          role: "assistant",
+          parts: [{ type: "text", text: welcomeText }],
+        },
+        ...restored,
+      ];
+
+      setConsultationId(cid);
+      setInitialMessages(withWelcome);
+      setBootstrapping(false);
+    })();
+    return () => {
+      cancelled = true;
+    };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [id, user?.id]);
+
+  if (bootstrapping || !consultationId || !initialMessages) {
+    return (
+      <div className="flex min-h-screen items-center justify-center bg-slate-50">
+        <div className="size-8 animate-spin rounded-full border-2 border-slate-200 border-t-brand" />
+      </div>
+    );
+  }
+
+  return (
+    <IntakeChat
+      consultationId={consultationId}
+      initialMessages={initialMessages}
+      onFinished={(cid) => navigate({ to: "/review/$id", params: { id: cid } })}
+    />
+  );
+}
+
+function IntakeChat({
+  consultationId,
+  initialMessages,
+  onFinished,
+}: {
+  consultationId: string;
+  initialMessages: UIMessage[];
+  onFinished: (cid: string) => void;
+}) {
+  const { t, dir, locale } = useI18n();
+  const generate = useServerFn(generateReview);
   const [input, setInput] = useState("");
   const [finishing, setFinishing] = useState(false);
   const scrollRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLTextAreaElement>(null);
 
-  // Bootstrap: create consultation if "new"
-  useEffect(() => {
-    if (!user) return;
-    if (id !== "new") {
-      setConsultationId(id);
-      setBootstrapping(false);
-      return;
-    }
-    (async () => {
-      const { data, error } = await supabase
-        .from("consultations")
-        .insert({ patient_id: user.id, status: "intake", locale })
-        .select("id")
-        .single();
-      if (error) {
-        toast.error(error.message);
-        setBootstrapping(false);
-        return;
-      }
-      setConsultationId(data.id);
-      navigate({ to: "/intake/$id", params: { id: data.id }, replace: true });
-      setBootstrapping(false);
-    })();
-  }, [id, user, locale, navigate]);
-
-  const initialMessage = useMemo<UIMessage>(
-    () => ({
-      id: "welcome",
-      role: "assistant",
-      parts: [{ type: "text", text: t("intake.welcome") }],
-    }),
-    [t],
+  // Track which assistant messages have been persisted, seeded with anything
+  // we loaded from the DB plus the transient "welcome" bubble.
+  const persistedIds = useRef<Set<string>>(
+    new Set(initialMessages.map((m) => m.id)),
   );
 
+  const stableInitial = useMemo(() => initialMessages, [initialMessages]);
+
   const { messages, sendMessage, status } = useChat({
-    id: consultationId ?? "pending",
-    messages: [initialMessage],
+    id: consultationId,
+    messages: stableInitial,
     transport: new DefaultChatTransport({ api: "/api/chat", body: { locale } }),
     onError: (e) => toast.error(e.message || t("intake.errorGeneric")),
   });
 
   const isStreaming = status === "submitted" || status === "streaming";
 
+  // Persist assistant messages once streaming settles.
   useEffect(() => {
-    scrollRef.current?.scrollTo({ top: scrollRef.current.scrollHeight, behavior: "smooth" });
+    if (isStreaming) return;
+    const pending = messages.filter(
+      (m) =>
+        m.role === "assistant" &&
+        !persistedIds.current.has(m.id) &&
+        partsToText(m).length > 0,
+    );
+    if (pending.length === 0) return;
+    (async () => {
+      for (const m of pending) {
+        const content = partsToText(m);
+        const { error } = await supabase.from("intake_messages").insert({
+          consultation_id: consultationId,
+          role: "assistant",
+          content,
+        });
+        if (error) {
+          toast.error(error.message);
+          return;
+        }
+        persistedIds.current.add(m.id);
+      }
+    })();
+  }, [messages, isStreaming, consultationId]);
+
+  useEffect(() => {
+    scrollRef.current?.scrollTo({
+      top: scrollRef.current.scrollHeight,
+      behavior: "smooth",
+    });
   }, [messages, isStreaming]);
 
   useEffect(() => {
@@ -92,24 +190,51 @@ function IntakePage() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     const trimmed = input.trim();
-    if (!trimmed || isStreaming) return;
+    if (!trimmed || isStreaming || finishing) return;
     setInput("");
-    await sendMessage({ text: trimmed });
-    // Persist user message
-    if (consultationId) {
-      void supabase
-        .from("intake_messages")
-        .insert({ consultation_id: consultationId, role: "user", content: trimmed });
+
+    // Persist the user message FIRST so it survives even if streaming fails.
+    const { error } = await supabase.from("intake_messages").insert({
+      consultation_id: consultationId,
+      role: "user",
+      content: trimmed,
+    });
+    if (error) {
+      toast.error(error.message);
+      setInput(trimmed);
+      return;
     }
+    await sendMessage({ text: trimmed });
   };
 
   const handleFinish = async () => {
-    if (finishing || !consultationId) return;
+    if (finishing) return;
     setFinishing(true);
     try {
+      // Flush any assistant messages not yet persisted before summarizing.
+      const pending = messages.filter(
+        (m) =>
+          m.role === "assistant" &&
+          !persistedIds.current.has(m.id) &&
+          partsToText(m).length > 0,
+      );
+      for (const m of pending) {
+        const content = partsToText(m);
+        const { error } = await supabase.from("intake_messages").insert({
+          consultation_id: consultationId,
+          role: "assistant",
+          content,
+        });
+        if (error) throw error;
+        persistedIds.current.add(m.id);
+      }
+
       const transcript = messages
         .filter((m) => m.role === "user" || m.role === "assistant")
-        .map((m) => `${m.role === "user" ? "Patient" : "Assistant"}: ${partsToText(m)}`)
+        .map(
+          (m) =>
+            `${m.role === "user" ? "Patient" : "Assistant"}: ${partsToText(m)}`,
+        )
         .join("\n\n");
 
       const review = await generate({ data: { transcript, locale } });
@@ -133,25 +258,18 @@ function IntakePage() {
       });
       if (reviewErr) throw reviewErr;
 
-      await supabase
+      const { error: updErr } = await supabase
         .from("consultations")
         .update({ status: "review", updated_at: new Date().toISOString() })
         .eq("id", consultationId);
+      if (updErr) throw updErr;
 
-      navigate({ to: "/review/$id", params: { id: consultationId } });
+      onFinished(consultationId);
     } catch (err) {
       toast.error(err instanceof Error ? err.message : t("intake.errorFinish"));
       setFinishing(false);
     }
   };
-
-  if (bootstrapping || !consultationId) {
-    return (
-      <div className="flex min-h-screen items-center justify-center bg-slate-50">
-        <div className="size-8 animate-spin rounded-full border-2 border-slate-200 border-t-brand" />
-      </div>
-    );
-  }
 
   return (
     <div className="flex min-h-screen flex-col bg-slate-50">

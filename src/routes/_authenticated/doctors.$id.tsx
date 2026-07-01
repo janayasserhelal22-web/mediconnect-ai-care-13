@@ -23,7 +23,7 @@ function DoctorsPage() {
     queryFn: async () => {
       const { data } = await supabase
         .from("medical_reviews")
-        .select("primary_specialty,secondary_specialty,alternative_specialty")
+        .select("primary_specialty,secondary_specialty,alternative_specialty,is_emergency,risk_level")
         .eq("consultation_id", id)
         .maybeSingle();
       return data;
@@ -36,17 +36,49 @@ function DoctorsPage() {
     review?.alternative_specialty,
   ].filter(Boolean) as string[];
 
-  const { data: doctors, isLoading } = useQuery({
-    queryKey: ["doctors", specialties.join("|")],
+  const isEmergency =
+    !!review?.is_emergency ||
+    review?.risk_level === "Critical" ||
+    specialties.includes("Emergency Medicine");
+
+  const { data: doctorsResult, isLoading } = useQuery({
+    queryKey: ["doctors", specialties.join("|"), isEmergency],
     enabled: !!review,
     queryFn: async () => {
-      let q = supabase.from("doctor_profiles").select("*");
-      if (specialties.length > 0) q = q.in("specialty", specialties);
-      const { data, error } = await q.limit(20);
-      if (error) throw error;
-      return data ?? [];
+      // 1. Try recommended specialties, available only.
+      if (specialties.length > 0) {
+        const { data, error } = await supabase
+          .from("doctor_profiles")
+          .select("*")
+          .in("specialty", specialties)
+          .eq("availability", "available")
+          .limit(20);
+        if (error) throw error;
+        if (data && data.length > 0) return { doctors: data, fallback: false as const };
+      }
+
+      // 2. Emergency fallback: always show Emergency Medicine doctors first.
+      if (isEmergency) {
+        const { data } = await supabase
+          .from("doctor_profiles")
+          .select("*")
+          .eq("specialty", "Emergency Medicine")
+          .limit(20);
+        if (data && data.length > 0) return { doctors: data, fallback: true as const };
+      }
+
+      // 3. Fallback: any available doctor (broadest general → specialist).
+      const { data } = await supabase
+        .from("doctor_profiles")
+        .select("*")
+        .eq("availability", "available")
+        .limit(20);
+      return { doctors: data ?? [], fallback: true as const };
     },
   });
+
+  const doctors = doctorsResult?.doctors;
+  const isFallback = doctorsResult?.fallback ?? false;
 
   async function book(doctorUserId: string) {
     if (!user) return;

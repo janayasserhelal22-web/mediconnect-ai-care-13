@@ -181,6 +181,8 @@ const ar: Dict = {
   "doctors.busy": "مشغول",
   "doctors.noResults": "لا يوجد أطباء حاليًا في هذا التخصص.",
   "doctors.viewAll": "عرض الكل",
+  "doctors.fallbackNotice": "لا يوجد أخصائيون في التخصصات الموصى بها حاليًا. نعرض عليك أطباء متاحين من تخصصات ذات صلة.",
+  "doctors.emergencyFallback": "حالتك طارئة. إذا لم يستجب طبيب الطوارئ خلال دقائق، اتصل بالإسعاف فورًا (٩٩٧).",
 
   // Consultation chat
   "consult.metaTitle": "الاستشارة — ميديكونكت",

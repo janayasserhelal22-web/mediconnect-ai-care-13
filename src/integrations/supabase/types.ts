@@ -92,6 +92,8 @@ export type Database = {
           specialty_ar: string | null
           specialty_en: string | null
           user_id: string
+          vodafone_holder: string | null
+          vodafone_number: string | null
           years_experience: number
         }
         Insert: {
@@ -109,6 +111,8 @@ export type Database = {
           specialty_ar?: string | null
           specialty_en?: string | null
           user_id: string
+          vodafone_holder?: string | null
+          vodafone_number?: string | null
           years_experience?: number
         }
         Update: {
@@ -126,6 +130,8 @@ export type Database = {
           specialty_ar?: string | null
           specialty_en?: string | null
           user_id?: string
+          vodafone_holder?: string | null
+          vodafone_number?: string | null
           years_experience?: number
         }
         Relationships: []
@@ -225,6 +231,65 @@ export type Database = {
             foreignKeyName: "medical_reviews_consultation_id_fkey"
             columns: ["consultation_id"]
             isOneToOne: true
+            referencedRelation: "consultations"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      payments: {
+        Row: {
+          amount: number
+          consultation_id: string
+          created_at: string
+          doctor_id: string
+          id: string
+          patient_id: string
+          payment_method: string
+          receipt_image_url: string
+          rejection_reason: string | null
+          reviewed_at: string | null
+          reviewed_by: string | null
+          status: string
+          transaction_reference: string
+          updated_at: string
+        }
+        Insert: {
+          amount?: number
+          consultation_id: string
+          created_at?: string
+          doctor_id: string
+          id?: string
+          patient_id: string
+          payment_method?: string
+          receipt_image_url: string
+          rejection_reason?: string | null
+          reviewed_at?: string | null
+          reviewed_by?: string | null
+          status?: string
+          transaction_reference: string
+          updated_at?: string
+        }
+        Update: {
+          amount?: number
+          consultation_id?: string
+          created_at?: string
+          doctor_id?: string
+          id?: string
+          patient_id?: string
+          payment_method?: string
+          receipt_image_url?: string
+          rejection_reason?: string | null
+          reviewed_at?: string | null
+          reviewed_by?: string | null
+          status?: string
+          transaction_reference?: string
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "payments_consultation_id_fkey"
+            columns: ["consultation_id"]
+            isOneToOne: false
             referencedRelation: "consultations"
             referencedColumns: ["id"]
           },

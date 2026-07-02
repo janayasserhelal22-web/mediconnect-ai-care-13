@@ -56,6 +56,24 @@ function ConsultationPage() {
     refetchInterval: 8000,
   });
 
+  const { data: payment } = useQuery({
+    queryKey: ["payment", id],
+    queryFn: async () => {
+      const { data } = await supabase
+        .from("payments")
+        .select("id,status,rejection_reason")
+        .eq("consultation_id", id)
+        .order("created_at", { ascending: false })
+        .limit(1)
+        .maybeSingle();
+      return data;
+    },
+    refetchInterval: 6000,
+  });
+
+  const isPatient = !!user && user.id === consult?.patient_id;
+  const paymentBlocked = isPatient && payment?.status !== "approved";
+
   useEffect(() => {
     scrollRef.current?.scrollTo({ top: scrollRef.current.scrollHeight });
   }, [messages]);
@@ -115,7 +133,20 @@ function ConsultationPage() {
               })}
             </div>
 
-            {!isCompleted && (
+            {!isCompleted && paymentBlocked && (
+              <div className="border-t border-slate-100 bg-amber-50 p-4 text-center text-sm text-amber-900">
+                <p className="font-semibold">{t("payment.consult.awaiting")}</p>
+                <Link
+                  to="/payment/$id"
+                  params={{ id }}
+                  className="mt-2 inline-block rounded-full bg-amber-500 px-4 py-1.5 text-xs font-bold text-white hover:bg-amber-600"
+                >
+                  {t("payment.consult.viewStatus")}
+                </Link>
+              </div>
+            )}
+
+            {!isCompleted && !paymentBlocked && (
               <form
                 onSubmit={send}
                 className="flex items-end gap-2 border-t border-slate-100 p-3"

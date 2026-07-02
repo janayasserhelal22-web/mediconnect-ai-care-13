@@ -82,16 +82,22 @@ function DoctorsPage() {
 
   async function book(doctorUserId: string) {
     if (!user) return;
+    // Assign doctor and move consultation into awaiting_payment state.
+    // Consultation chat stays locked until the payment record is approved.
     const { error } = await supabase
       .from("consultations")
-      .update({ doctor_id: doctorUserId, status: "active", updated_at: new Date().toISOString() })
+      .update({
+        doctor_id: doctorUserId,
+        status: "awaiting_payment",
+        updated_at: new Date().toISOString(),
+      })
       .eq("id", id)
       .eq("patient_id", user.id);
     if (error) {
       toast.error(error.message);
       return;
     }
-    navigate({ to: "/consultation/$id", params: { id } });
+    navigate({ to: "/payment/$id", params: { id } });
   }
 
   return (

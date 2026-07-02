@@ -17,6 +17,7 @@ import { Route as ApiChatRouteImport } from './routes/api/chat'
 import { Route as AuthenticatedHistoryRouteImport } from './routes/_authenticated/history'
 import { Route as AuthenticatedDoctorRouteImport } from './routes/_authenticated/doctor'
 import { Route as AuthenticatedReviewIdRouteImport } from './routes/_authenticated/review.$id'
+import { Route as AuthenticatedPaymentIdRouteImport } from './routes/_authenticated/payment.$id'
 import { Route as AuthenticatedIntakeIdRouteImport } from './routes/_authenticated/intake.$id'
 import { Route as AuthenticatedDoctorsIdRouteImport } from './routes/_authenticated/doctors.$id'
 import { Route as AuthenticatedConsultationIdRouteImport } from './routes/_authenticated/consultation.$id'
@@ -61,6 +62,11 @@ const AuthenticatedReviewIdRoute = AuthenticatedReviewIdRouteImport.update({
   path: '/review/$id',
   getParentRoute: () => AuthenticatedRoute,
 } as any)
+const AuthenticatedPaymentIdRoute = AuthenticatedPaymentIdRouteImport.update({
+  id: '/payment/$id',
+  path: '/payment/$id',
+  getParentRoute: () => AuthenticatedRoute,
+} as any)
 const AuthenticatedIntakeIdRoute = AuthenticatedIntakeIdRouteImport.update({
   id: '/intake/$id',
   path: '/intake/$id',
@@ -94,6 +100,7 @@ export interface FileRoutesByFullPath {
   '/consultation/$id': typeof AuthenticatedConsultationIdRoute
   '/doctors/$id': typeof AuthenticatedDoctorsIdRoute
   '/intake/$id': typeof AuthenticatedIntakeIdRoute
+  '/payment/$id': typeof AuthenticatedPaymentIdRoute
   '/review/$id': typeof AuthenticatedReviewIdRoute
   '/doctor/case/$id': typeof AuthenticatedDoctorCaseIdRoute
 }
@@ -107,6 +114,7 @@ export interface FileRoutesByTo {
   '/consultation/$id': typeof AuthenticatedConsultationIdRoute
   '/doctors/$id': typeof AuthenticatedDoctorsIdRoute
   '/intake/$id': typeof AuthenticatedIntakeIdRoute
+  '/payment/$id': typeof AuthenticatedPaymentIdRoute
   '/review/$id': typeof AuthenticatedReviewIdRoute
   '/doctor/case/$id': typeof AuthenticatedDoctorCaseIdRoute
 }
@@ -122,6 +130,7 @@ export interface FileRoutesById {
   '/_authenticated/consultation/$id': typeof AuthenticatedConsultationIdRoute
   '/_authenticated/doctors/$id': typeof AuthenticatedDoctorsIdRoute
   '/_authenticated/intake/$id': typeof AuthenticatedIntakeIdRoute
+  '/_authenticated/payment/$id': typeof AuthenticatedPaymentIdRoute
   '/_authenticated/review/$id': typeof AuthenticatedReviewIdRoute
   '/_authenticated/doctor/case/$id': typeof AuthenticatedDoctorCaseIdRoute
 }
@@ -137,6 +146,7 @@ export interface FileRouteTypes {
     | '/consultation/$id'
     | '/doctors/$id'
     | '/intake/$id'
+    | '/payment/$id'
     | '/review/$id'
     | '/doctor/case/$id'
   fileRoutesByTo: FileRoutesByTo
@@ -150,6 +160,7 @@ export interface FileRouteTypes {
     | '/consultation/$id'
     | '/doctors/$id'
     | '/intake/$id'
+    | '/payment/$id'
     | '/review/$id'
     | '/doctor/case/$id'
   id:
@@ -164,6 +175,7 @@ export interface FileRouteTypes {
     | '/_authenticated/consultation/$id'
     | '/_authenticated/doctors/$id'
     | '/_authenticated/intake/$id'
+    | '/_authenticated/payment/$id'
     | '/_authenticated/review/$id'
     | '/_authenticated/doctor/case/$id'
   fileRoutesById: FileRoutesById
@@ -234,6 +246,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedReviewIdRouteImport
       parentRoute: typeof AuthenticatedRoute
     }
+    '/_authenticated/payment/$id': {
+      id: '/_authenticated/payment/$id'
+      path: '/payment/$id'
+      fullPath: '/payment/$id'
+      preLoaderRoute: typeof AuthenticatedPaymentIdRouteImport
+      parentRoute: typeof AuthenticatedRoute
+    }
     '/_authenticated/intake/$id': {
       id: '/_authenticated/intake/$id'
       path: '/intake/$id'
@@ -282,6 +301,7 @@ interface AuthenticatedRouteChildren {
   AuthenticatedConsultationIdRoute: typeof AuthenticatedConsultationIdRoute
   AuthenticatedDoctorsIdRoute: typeof AuthenticatedDoctorsIdRoute
   AuthenticatedIntakeIdRoute: typeof AuthenticatedIntakeIdRoute
+  AuthenticatedPaymentIdRoute: typeof AuthenticatedPaymentIdRoute
   AuthenticatedReviewIdRoute: typeof AuthenticatedReviewIdRoute
 }
 
@@ -291,6 +311,7 @@ const AuthenticatedRouteChildren: AuthenticatedRouteChildren = {
   AuthenticatedConsultationIdRoute: AuthenticatedConsultationIdRoute,
   AuthenticatedDoctorsIdRoute: AuthenticatedDoctorsIdRoute,
   AuthenticatedIntakeIdRoute: AuthenticatedIntakeIdRoute,
+  AuthenticatedPaymentIdRoute: AuthenticatedPaymentIdRoute,
   AuthenticatedReviewIdRoute: AuthenticatedReviewIdRoute,
 }
 

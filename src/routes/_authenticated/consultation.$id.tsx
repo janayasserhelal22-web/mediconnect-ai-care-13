@@ -56,6 +56,24 @@ function ConsultationPage() {
     refetchInterval: 8000,
   });
 
+  const { data: payment } = useQuery({
+    queryKey: ["payment", id],
+    queryFn: async () => {
+      const { data } = await supabase
+        .from("payments")
+        .select("id,status,rejection_reason")
+        .eq("consultation_id", id)
+        .order("created_at", { ascending: false })
+        .limit(1)
+        .maybeSingle();
+      return data;
+    },
+    refetchInterval: 6000,
+  });
+
+  const isPatient = !!user && user.id === consult?.patient_id;
+  const paymentBlocked = isPatient && payment?.status !== "approved";
+
   useEffect(() => {
     scrollRef.current?.scrollTo({ top: scrollRef.current.scrollHeight });
   }, [messages]);

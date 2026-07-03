@@ -239,6 +239,8 @@ export type Database = {
       payments: {
         Row: {
           amount: number
+          approved_at: string | null
+          approved_by: string | null
           consultation_id: string
           created_at: string
           doctor_id: string
@@ -255,6 +257,8 @@ export type Database = {
         }
         Insert: {
           amount?: number
+          approved_at?: string | null
+          approved_by?: string | null
           consultation_id: string
           created_at?: string
           doctor_id: string
@@ -271,6 +275,8 @@ export type Database = {
         }
         Update: {
           amount?: number
+          approved_at?: string | null
+          approved_by?: string | null
           consultation_id?: string
           created_at?: string
           doctor_id?: string

@@ -8,7 +8,7 @@ import { Star } from "lucide-react";
 import { toast } from "sonner";
 
 export const Route = createFileRoute("/_authenticated/doctors/$id")({
-  head: () => ({ meta: [{ title: "Doctors — MediConnect" }] }),
+  head: () => ({ meta: [{ title: "Doctors — Tammeni Doctor" }] }),
   component: DoctorsPage,
 });
 

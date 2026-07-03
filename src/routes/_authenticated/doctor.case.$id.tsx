@@ -9,7 +9,7 @@ import { useEffect, useRef, useState } from "react";
 import { toast } from "sonner";
 
 export const Route = createFileRoute("/_authenticated/doctor/case/$id")({
-  head: () => ({ meta: [{ title: "Case — MediConnect" }] }),
+  head: () => ({ meta: [{ title: "Case — Tammeni Doctor" }] }),
   component: DoctorCasePage,
 });
 

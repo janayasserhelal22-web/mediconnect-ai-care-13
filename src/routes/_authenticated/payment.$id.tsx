@@ -17,7 +17,7 @@ import { useEffect, useRef, useState } from "react";
 import { toast } from "sonner";
 
 export const Route = createFileRoute("/_authenticated/payment/$id")({
-  head: () => ({ meta: [{ title: "Payment Verification — MediConnect" }] }),
+  head: () => ({ meta: [{ title: "Payment Verification — Tammeni Doctor" }] }),
   component: PaymentPage,
 });
 

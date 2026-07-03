@@ -7,7 +7,7 @@ import { useQuery } from "@tanstack/react-query";
 import { createFileRoute, Link } from "@tanstack/react-router";
 
 export const Route = createFileRoute("/_authenticated/doctor")({
-  head: () => ({ meta: [{ title: "Doctor Dashboard — MediConnect" }] }),
+  head: () => ({ meta: [{ title: "Doctor Dashboard — Tammeni Doctor" }] }),
   component: DoctorDashboard,
 });
 

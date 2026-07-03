@@ -62,17 +62,19 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
     meta: [
       { charSet: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1" },
-      { title: "ميديكونكت — تقييم طبي ذكي بالذكاء الاصطناعي" },
+      { title: "طمّني يا دكتور — استشارة طبية ذكية بالذكاء الاصطناعي" },
       {
         name: "description",
         content:
-          "منصة طبية ذكية: تحدث مع المساعد الذكي، احصل على تقرير سريري، ثم اختر التخصص المناسب.",
+          "استشارة طبية ذكية تبدأ بالذكاء الاصطناعي وتنتهي مع الطبيب المناسب. تقييم أولي فوري ثم تواصل آمن مع الطبيب الأنسب لحالتك.",
       },
-      { property: "og:title", content: "MediConnect — AI-first healthcare" },
+      { property: "og:title", content: "Tammeni Doctor — Smart AI-powered medical consultations" },
       {
         property: "og:description",
-        content: "AI-powered medical assessment before you meet the doctor.",
+        content:
+          "Smart medical consultations powered by AI and completed with the right doctor.",
       },
+      { property: "og:site_name", content: "Tammeni Doctor" },
       { property: "og:type", content: "website" },
     ],
     links: [

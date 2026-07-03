@@ -9,7 +9,7 @@ import { Activity, AlertCircle, AlertTriangle, ArrowLeft, Clock, FileText, Steth
 import { useEffect, useState } from "react";
 
 export const Route = createFileRoute("/_authenticated/review/$id")({
-  head: () => ({ meta: [{ title: "Medical Review — MediConnect" }] }),
+  head: () => ({ meta: [{ title: "Medical Review — Tammeni Doctor" }] }),
   component: ReviewPage,
 });
 

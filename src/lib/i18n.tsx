@@ -13,8 +13,8 @@ export type Locale = "ar" | "en";
 type Dict = Record<string, string>;
 
 const ar: Dict = {
-  "brand.name": "ميديكونكت",
-  "brand.tagline": "رعاية صحية ذكية",
+  "brand.name": "طمّني يا دكتور",
+  "brand.tagline": "استشارة طبية ذكية تبدأ بالذكاء الاصطناعي وتنتهي مع الطبيب المناسب.",
   "nav.features": "المميزات",
   "nav.about": "من نحن",
   "nav.howItWorks": "كيف يعمل",
@@ -25,13 +25,13 @@ const ar: Dict = {
   "nav.signOut": "تسجيل الخروج",
   "nav.language": "English",
 
-  "home.title": "ميديكونكت — تقييم طبي بالذكاء الاصطناعي قبل لقاء الطبيب",
-  "home.metaDesc": "منصة طبية ذكية: تحدث مع المساعد الذكي، احصل على تقرير سريري، ثم اختر التخصص المناسب لك.",
+  "home.title": "طمّني يا دكتور — استشارة طبية ذكية بالذكاء الاصطناعي",
+  "home.metaDesc": "استشارة طبية ذكية تبدأ بالذكاء الاصطناعي وتنتهي مع الطبيب المناسب. تقييم أولي فوري، ثم تواصل آمن مع الطبيب الأنسب لحالتك.",
   "home.badge": "منصة الذكاء الاصطناعي الطبية",
-  "home.heroTitle1": "تقييم طبي ذكي",
-  "home.heroTitle2": "قبل لقاء الطبيب.",
+  "home.heroTitle1": "طمّني يا دكتور",
+  "home.heroTitle2": "",
   "home.heroSubtitle":
-    "صف أعراضك للمساعد الذكي، احصل على ملخص سريري احترافي، ودعنا نوصلك بالأخصائي المناسب لحالتك.",
+    "ابدأ بتقييم طبي أولي باستخدام الذكاء الاصطناعي، ثم تواصل مع الطبيب الأنسب لحالتك بسهولة وأمان.",
   "home.ctaPrimary": "ابدأ الاستشارة الآن",
   "home.ctaSecondary": "كيف يعمل؟",
   "home.stat.accuracy": "دقة التوصية",
@@ -52,7 +52,7 @@ const ar: Dict = {
   "about.kicker": "من نحن",
   "about.title": "طب دقيق، مبسّط من أجلك.",
   "about.desc":
-    "تربط ميديكونكت بين كفاءة الذكاء الاصطناعي ودفء الإنسان. الاستقبال يتم بالذكاء الاصطناعي، والعلاج يبقى مع الإنسان.",
+    "تربط طمّني يا دكتور بين كفاءة الذكاء الاصطناعي ودفء الإنسان. الاستقبال يتم بالذكاء الاصطناعي، والعلاج يبقى مع الإنسان.",
   "about.b1": "وصول على مدار الساعة لأطباء معتمدين",
   "about.b2": "مراسلة آمنة ومتوافقة مع معايير الخصوصية",
   "about.b3": "ملفات حالة منظمة في ثوانٍ",
@@ -61,7 +61,7 @@ const ar: Dict = {
   "footer.title": "هل أنت مستعد لتجربة أفضل؟",
   "footer.subtitle": "ابدأ استشارتك الآن — بلا انتظار وبلا أوراق.",
   "footer.cta": "ابدأ استشارتك",
-  "footer.copyright": "© ٢٠٢٦ ميديكونكت للرعاية الصحية",
+  "footer.copyright": "© ٢٠٢٦ طمّني يا دكتور للرعاية الصحية",
 
   // Role chooser
   "start.title": "كيف تريد المتابعة؟",
@@ -109,7 +109,7 @@ const ar: Dict = {
   "auth.cooldown": "أعد المحاولة بعد {seconds} ث",
 
   // Intake
-  "intake.metaTitle": "تقييم بالذكاء الاصطناعي — ميديكونكت",
+  "intake.metaTitle": "تقييم بالذكاء الاصطناعي — طمّني يا دكتور",
   "intake.kicker": "استقبال ذكي",
   "intake.title": "أخبرنا بما تشعر",
   "intake.subtitle": "ينظّم المساعد الذكي التفاصيل ليتفرّغ طبيبك لك.",
@@ -120,17 +120,17 @@ const ar: Dict = {
   "intake.you": "أنت",
   "intake.placeholder": "اكتب ردك…",
   "intake.send": "إرسال",
-  "intake.disclaimer": "لا تقدّم ميديكونكت تشخيصات. في الطوارئ اتصل بالخدمات المحلية.",
+  "intake.disclaimer": "لا تقدّم طمّني يا دكتور تشخيصات. في الطوارئ اتصل بالخدمات المحلية.",
   "intake.finish": "إنهاء وإنشاء التقرير",
   "intake.finishing": "جارٍ تجهيز التقرير…",
   "intake.welcome":
-    "مرحبًا بك في ميديكونكت. سأطرح بعض الأسئلة لتجهيز حالتك للطبيب. ما هو العرض الرئيسي الذي تشعر به؟ ومتى بدأ؟",
+    "مرحبًا بك في طمّني يا دكتور. سأطرح بعض الأسئلة لتجهيز حالتك للطبيب. ما هو العرض الرئيسي الذي تشعر به؟ ومتى بدأ؟",
   "intake.progress": "تقدّم التقييم",
   "intake.errorGeneric": "حدث خطأ ما.",
   "intake.errorFinish": "تعذّر إنشاء التقرير.",
 
   // Review
-  "review.metaTitle": "التقرير الطبي — ميديكونكت",
+  "review.metaTitle": "التقرير الطبي — طمّني يا دكتور",
   "review.kicker": "التقرير الطبي",
   "review.title": "ملخّص حالتك",
   "review.subtitle": "تقرير سريري احترافي مبني على محادثتك.",
@@ -169,7 +169,7 @@ const ar: Dict = {
   "emergency.continueAnyway": "تابع إلى التقرير الطبي",
 
   // Doctors
-  "doctors.metaTitle": "اختر طبيبك — ميديكونكت",
+  "doctors.metaTitle": "اختر طبيبك — طمّني يا دكتور",
   "doctors.kicker": "الأطباء المتاحون",
   "doctors.title": "أطباء موصى بهم لحالتك",
   "doctors.subtitle": "أخصائيون يطابقون التخصص الموصى به.",
@@ -185,7 +185,7 @@ const ar: Dict = {
   "doctors.emergencyFallback": "حالتك طارئة. إذا لم يستجب طبيب الطوارئ خلال دقائق، اتصل بالإسعاف فورًا (٩٩٧).",
 
   // Consultation chat
-  "consult.metaTitle": "الاستشارة — ميديكونكت",
+  "consult.metaTitle": "الاستشارة — طمّني يا دكتور",
   "consult.title": "محادثة مع الطبيب",
   "consult.with": "مع",
   "consult.placeholder": "اكتب رسالتك…",
@@ -234,7 +234,7 @@ const ar: Dict = {
   "doctor.case.completed": "تم إنهاء الحالة",
 
   // Payment
-  "payment.metaTitle": "تأكيد الدفع — ميديكونكت",
+  "payment.metaTitle": "تأكيد الدفع — طمّني يا دكتور",
   "payment.title": "تأكيد الدفع",
   "payment.subtitle": "الرجاء تحويل قيمة الكشف وإرفاق إيصال التحويل لبدء الاستشارة.",
   "payment.doctor.title": "الطبيب المختار",
@@ -281,8 +281,8 @@ const ar: Dict = {
 };
 
 const en: Dict = {
-  "brand.name": "MediConnect",
-  "brand.tagline": "Smart healthcare",
+  "brand.name": "Tammeni Doctor",
+  "brand.tagline": "Smart medical consultations powered by AI and completed with the right doctor.",
   "nav.features": "Features",
   "nav.about": "About",
   "nav.howItWorks": "How it works",
@@ -293,14 +293,14 @@ const en: Dict = {
   "nav.signOut": "Sign out",
   "nav.language": "العربية",
 
-  "home.title": "MediConnect — AI-powered medical assessment before you meet the doctor",
+  "home.title": "Tammeni Doctor — Smart AI-powered medical consultations",
   "home.metaDesc":
-    "Chat with our AI medical assistant, get a clinical case summary, then connect with the right specialist for your case.",
+    "Smart medical consultations powered by AI and completed with the right doctor. Get an instant AI assessment, then connect safely with the specialist who fits your case.",
   "home.badge": "AI-first medical platform",
-  "home.heroTitle1": "Smart medical assessment",
-  "home.heroTitle2": "before you meet the doctor.",
+  "home.heroTitle1": "Tammeni Doctor",
+  "home.heroTitle2": "",
   "home.heroSubtitle":
-    "Describe your symptoms to our AI assistant, get a professional clinical summary, and we'll match you with the right specialist.",
+    "Start with an AI-powered medical assessment, then connect with the right doctor for your condition quickly, safely, and confidently.",
   "home.ctaPrimary": "Start Consultation",
   "home.ctaSecondary": "How it works",
   "home.stat.accuracy": "Recommendation accuracy",
@@ -321,7 +321,7 @@ const en: Dict = {
   "about.kicker": "About",
   "about.title": "Precision medicine, simplified.",
   "about.desc":
-    "MediConnect blends AI efficiency with human warmth. Intake is automated; care stays human.",
+    "Tammeni Doctor blends AI efficiency with human warmth. Intake is automated; care stays human.",
   "about.b1": "24/7 access to board-certified experts",
   "about.b2": "Secure, privacy-compliant messaging",
   "about.b3": "Structured case files delivered in seconds",
@@ -330,7 +330,7 @@ const en: Dict = {
   "footer.title": "Ready for a better experience?",
   "footer.subtitle": "Start your consultation now — no waiting room, no paperwork.",
   "footer.cta": "Start Your Consultation",
-  "footer.copyright": "© 2026 MediConnect Healthcare",
+  "footer.copyright": "© 2026 Tammeni Doctor Healthcare",
 
   "start.title": "How would you like to continue?",
   "start.subtitle": "Choose your role to get started.",
@@ -375,7 +375,7 @@ const en: Dict = {
   "auth.backToSignIn": "Back to sign in",
   "auth.cooldown": "Retry in {seconds}s",
 
-  "intake.metaTitle": "AI Assessment — MediConnect",
+  "intake.metaTitle": "AI Assessment — Tammeni Doctor",
   "intake.kicker": "Smart Intake",
   "intake.title": "Tell us what you're feeling",
   "intake.subtitle": "Our AI organizes the details so your doctor can focus on you.",
@@ -387,16 +387,16 @@ const en: Dict = {
   "intake.placeholder": "Type your response…",
   "intake.send": "Send",
   "intake.disclaimer":
-    "MediConnect never provides diagnoses. For emergencies, call your local services.",
+    "Tammeni Doctor never provides diagnoses. For emergencies, call your local services.",
   "intake.finish": "Finish & generate report",
   "intake.finishing": "Preparing report…",
   "intake.welcome":
-    "Welcome to MediConnect. I'll ask a few questions to prepare your case. What is your main symptom, and when did it start?",
+    "Welcome to Tammeni Doctor. I'll ask a few questions to prepare your case. What is your main symptom, and when did it start?",
   "intake.progress": "Intake progress",
   "intake.errorGeneric": "Something went wrong.",
   "intake.errorFinish": "Failed to generate the report.",
 
-  "review.metaTitle": "Medical Review — MediConnect",
+  "review.metaTitle": "Medical Review — Tammeni Doctor",
   "review.kicker": "Medical Review",
   "review.title": "Your case summary",
   "review.subtitle": "Professional clinical summary based on your conversation.",
@@ -436,7 +436,7 @@ const en: Dict = {
     "I have read this warning and understand I should seek immediate emergency care if my condition is worsening.",
   "emergency.continueAnyway": "Continue to medical report",
 
-  "doctors.metaTitle": "Choose your doctor — MediConnect",
+  "doctors.metaTitle": "Choose your doctor — Tammeni Doctor",
   "doctors.kicker": "Available doctors",
   "doctors.title": "Doctors recommended for your case",
   "doctors.subtitle": "Specialists matching the recommended specialty.",
@@ -451,7 +451,7 @@ const en: Dict = {
   "doctors.fallbackNotice": "No specialists available in the recommended specialties right now. Showing available doctors from related specialties.",
   "doctors.emergencyFallback": "This is an emergency case. If no emergency doctor responds within minutes, call emergency services immediately (911 / 997).",
 
-  "consult.metaTitle": "Consultation — MediConnect",
+  "consult.metaTitle": "Consultation — Tammeni Doctor",
   "consult.title": "Doctor consultation",
   "consult.with": "with",
   "consult.placeholder": "Type your message…",
@@ -497,7 +497,7 @@ const en: Dict = {
   "doctor.case.completed": "Case completed",
 
   // Payment
-  "payment.metaTitle": "Payment Verification — MediConnect",
+  "payment.metaTitle": "Payment Verification — Tammeni Doctor",
   "payment.title": "Payment Verification",
   "payment.subtitle": "Transfer the consultation fee and upload the receipt to start your consultation.",
   "payment.doctor.title": "Selected Doctor",
@@ -554,7 +554,7 @@ type I18nContextValue = {
 };
 
 const I18nContext = createContext<I18nContextValue | null>(null);
-const STORAGE_KEY = "mediconnect:locale";
+const STORAGE_KEY = "tammeni:locale";
 
 export function I18nProvider({ children }: { children: ReactNode }) {
   const [locale, setLocaleState] = useState<Locale>("ar");

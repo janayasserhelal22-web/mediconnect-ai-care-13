@@ -6,7 +6,7 @@ import { useQuery } from "@tanstack/react-query";
 import { createFileRoute, Link } from "@tanstack/react-router";
 
 export const Route = createFileRoute("/_authenticated/history")({
-  head: () => ({ meta: [{ title: "History — MediConnect" }] }),
+  head: () => ({ meta: [{ title: "History — Tammeni Doctor" }] }),
   component: HistoryPage,
 });
 

@@ -60,12 +60,12 @@
   --popover-foreground: #0f172a;
   --primary: #0284c7;
   --primary-foreground: #ffffff;
-  --secondary: #f1f5f9;
-  --secondary-foreground: #0f172a;
+  --secondary: #d1fae5;
+  --secondary-foreground: #065f46;
   --muted: #f1f5f9;
   --muted-foreground: #64748b;
-  --accent: #e0f2fe;
-  --accent-foreground: #0c4a6e;
+  --accent: #f1f5f9;
+  --accent-foreground: #334155;
   --destructive: #dc2626;
   --destructive-foreground: #ffffff;
   --border: #e2e8f0;

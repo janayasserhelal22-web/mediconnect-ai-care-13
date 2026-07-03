@@ -14,7 +14,7 @@ type Dict = Record<string, string>;
 
 const ar: Dict = {
   "brand.name": "طمّني يا دكتور",
-  "brand.tagline": "رعاية صحية ذكية",
+  "brand.tagline": "استشارة طبية ذكية تبدأ بالذكاء الاصطناعي وتنتهي مع الطبيب المناسب.",
   "nav.features": "المميزات",
   "nav.about": "من نحن",
   "nav.howItWorks": "كيف يعمل",

@@ -8,7 +8,7 @@ import { useEffect, useRef, useState } from "react";
 import { toast } from "sonner";
 
 export const Route = createFileRoute("/_authenticated/consultation/$id")({
-  head: () => ({ meta: [{ title: "Consultation — MediConnect" }] }),
+  head: () => ({ meta: [{ title: "Consultation — Tammeni Doctor" }] }),
   component: ConsultationPage,
 });
 

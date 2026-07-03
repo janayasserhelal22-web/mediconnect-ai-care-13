@@ -5,7 +5,7 @@ import { Stethoscope, UserRound } from "lucide-react";
 
 export const Route = createFileRoute("/start")({
   head: () => ({
-    meta: [{ title: "Start — MediConnect" }],
+    meta: [{ title: "Start — Tammeni Doctor" }],
   }),
   component: StartPage,
 });

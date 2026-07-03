@@ -11,7 +11,7 @@ import { useEffect, useMemo, useRef, useState } from "react";
 import { toast } from "sonner";
 
 export const Route = createFileRoute("/_authenticated/intake/$id")({
-  head: () => ({ meta: [{ title: "AI Intake — MediConnect" }] }),
+  head: () => ({ meta: [{ title: "AI Intake — Tammeni Doctor" }] }),
   component: IntakePage,
 });
 

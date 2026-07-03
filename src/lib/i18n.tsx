@@ -282,7 +282,7 @@ const ar: Dict = {
 
 const en: Dict = {
   "brand.name": "Tammeni Doctor",
-  "brand.tagline": "Smart healthcare",
+  "brand.tagline": "Smart medical consultations powered by AI and completed with the right doctor.",
   "nav.features": "Features",
   "nav.about": "About",
   "nav.howItWorks": "How it works",
@@ -293,14 +293,14 @@ const en: Dict = {
   "nav.signOut": "Sign out",
   "nav.language": "العربية",
 
-  "home.title": "Tammeni Doctor — AI-powered medical assessment before you meet the doctor",
+  "home.title": "Tammeni Doctor — Smart AI-powered medical consultations",
   "home.metaDesc":
-    "Chat with our AI medical assistant, get a clinical case summary, then connect with the right specialist for your case.",
+    "Smart medical consultations powered by AI and completed with the right doctor. Get an instant AI assessment, then connect safely with the specialist who fits your case.",
   "home.badge": "AI-first medical platform",
-  "home.heroTitle1": "Smart medical assessment",
-  "home.heroTitle2": "before you meet the doctor.",
+  "home.heroTitle1": "Tammeni Doctor",
+  "home.heroTitle2": "",
   "home.heroSubtitle":
-    "Describe your symptoms to our AI assistant, get a professional clinical summary, and we'll match you with the right specialist.",
+    "Start with an AI-powered medical assessment, then connect with the right doctor for your condition quickly, safely, and confidently.",
   "home.ctaPrimary": "Start Consultation",
   "home.ctaSecondary": "How it works",
   "home.stat.accuracy": "Recommendation accuracy",

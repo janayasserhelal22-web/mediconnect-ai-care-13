@@ -114,23 +114,12 @@ export function useSubmitPayment() {
 export function useApprovePayment() {
   const qc = useQueryClient();
   return useMutation({
-    mutationFn: async (input: { paymentId: string; reviewerId: string }) => {
-      const nowIso = new Date().toISOString();
-      const { data, error } = await supabase
-        .from("payments")
-        .update({
-          status: "approved",
-          approved_by: input.reviewerId,
-          approved_at: nowIso,
-          reviewed_by: input.reviewerId,
-          reviewed_at: nowIso,
-          rejection_reason: null,
-        })
-        .eq("id", input.paymentId)
-        .select("*")
-        .single();
+    mutationFn: async (input: { paymentId: string; reviewerId?: string }) => {
+      const { data, error } = await supabase.rpc("approve_payment", {
+        p_payment_id: input.paymentId,
+      });
       if (error) throw error;
-      return data as Payment;
+      return data as unknown as Payment;
     },
     onSuccess: (p) => {
       qc.invalidateQueries({ queryKey: ["payment", p.consultation_id] });
@@ -145,25 +134,15 @@ export function useRejectPayment() {
   return useMutation({
     mutationFn: async (input: {
       paymentId: string;
-      reviewerId: string;
+      reviewerId?: string;
       reason: string;
     }) => {
-      const nowIso = new Date().toISOString();
-      const { data, error } = await supabase
-        .from("payments")
-        .update({
-          status: "rejected",
-          rejection_reason: input.reason.trim(),
-          approved_by: input.reviewerId,
-          approved_at: nowIso,
-          reviewed_by: input.reviewerId,
-          reviewed_at: nowIso,
-        })
-        .eq("id", input.paymentId)
-        .select("*")
-        .single();
+      const { data, error } = await supabase.rpc("reject_payment", {
+        p_payment_id: input.paymentId,
+        p_reason: input.reason,
+      });
       if (error) throw error;
-      return data as Payment;
+      return data as unknown as Payment;
     },
     onSuccess: (p) => {
       qc.invalidateQueries({ queryKey: ["payment", p.consultation_id] });
@@ -171,3 +150,4 @@ export function useRejectPayment() {
     },
   });
 }
+

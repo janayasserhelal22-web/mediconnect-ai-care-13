@@ -168,7 +168,7 @@ function PaymentPage() {
             </div>
             <PaymentInfoRow
               label={t("payment.info.number")}
-              value={doctor.vodafone_number ?? "—"}
+              value={paymentDetails?.vodafone_number ?? "—"}
               copyable
               copiedLabel={t("payment.info.copied")}
               copyAria={t("payment.info.copy")}
@@ -176,7 +176,8 @@ function PaymentPage() {
             <div className="my-3 h-px bg-slate-100" />
             <PaymentInfoRow
               label={t("payment.info.holder")}
-              value={doctor.vodafone_holder ?? "—"}
+              value={paymentDetails?.vodafone_holder ?? "—"}
+
             />
             <div className="my-3 h-px bg-slate-100" />
             <PaymentInfoRow

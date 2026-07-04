@@ -76,6 +76,30 @@ export type Database = {
         }
         Relationships: []
       }
+      doctor_payment_details: {
+        Row: {
+          created_at: string
+          updated_at: string
+          user_id: string
+          vodafone_holder: string | null
+          vodafone_number: string | null
+        }
+        Insert: {
+          created_at?: string
+          updated_at?: string
+          user_id: string
+          vodafone_holder?: string | null
+          vodafone_number?: string | null
+        }
+        Update: {
+          created_at?: string
+          updated_at?: string
+          user_id?: string
+          vodafone_holder?: string | null
+          vodafone_number?: string | null
+        }
+        Relationships: []
+      }
       doctor_profiles: {
         Row: {
           availability: string
@@ -92,8 +116,6 @@ export type Database = {
           specialty_ar: string | null
           specialty_en: string | null
           user_id: string
-          vodafone_holder: string | null
-          vodafone_number: string | null
           years_experience: number
         }
         Insert: {
@@ -111,8 +133,6 @@ export type Database = {
           specialty_ar?: string | null
           specialty_en?: string | null
           user_id: string
-          vodafone_holder?: string | null
-          vodafone_number?: string | null
           years_experience?: number
         }
         Update: {
@@ -130,8 +150,6 @@ export type Database = {
           specialty_ar?: string | null
           specialty_en?: string | null
           user_id?: string
-          vodafone_holder?: string | null
-          vodafone_number?: string | null
           years_experience?: number
         }
         Relationships: []
@@ -389,12 +407,66 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
+      approve_payment: {
+        Args: { p_payment_id: string }
+        Returns: {
+          amount: number
+          approved_at: string | null
+          approved_by: string | null
+          consultation_id: string
+          created_at: string
+          doctor_id: string
+          id: string
+          patient_id: string
+          payment_method: string
+          receipt_image_url: string
+          rejection_reason: string | null
+          reviewed_at: string | null
+          reviewed_by: string | null
+          status: string
+          transaction_reference: string
+          updated_at: string
+        }
+        SetofOptions: {
+          from: "*"
+          to: "payments"
+          isOneToOne: true
+          isSetofReturn: false
+        }
+      }
       has_role: {
         Args: {
           _role: Database["public"]["Enums"]["app_role"]
           _user_id: string
         }
         Returns: boolean
+      }
+      reject_payment: {
+        Args: { p_payment_id: string; p_reason: string }
+        Returns: {
+          amount: number
+          approved_at: string | null
+          approved_by: string | null
+          consultation_id: string
+          created_at: string
+          doctor_id: string
+          id: string
+          patient_id: string
+          payment_method: string
+          receipt_image_url: string
+          rejection_reason: string | null
+          reviewed_at: string | null
+          reviewed_by: string | null
+          status: string
+          transaction_reference: string
+          updated_at: string
+        }
+        SetofOptions: {
+          from: "*"
+          to: "payments"
+          isOneToOne: true
+          isSetofReturn: false
+        }
       }
     }
     Enums: {

@@ -49,13 +49,27 @@ function PaymentPage() {
       const { data } = await supabase
         .from("doctor_profiles")
         .select(
-          "user_id,full_name_ar,full_name_en,specialty_ar,specialty_en,photo_url,fee,vodafone_number,vodafone_holder",
+          "user_id,full_name_ar,full_name_en,specialty_ar,specialty_en,photo_url,fee",
         )
         .eq("user_id", consult!.doctor_id!)
         .maybeSingle();
       return data;
     },
   });
+
+  const { data: paymentDetails } = useQuery({
+    queryKey: ["doctor-payment-details", consult?.doctor_id],
+    enabled: !!consult?.doctor_id,
+    queryFn: async () => {
+      const { data } = await supabase
+        .from("doctor_payment_details")
+        .select("vodafone_number,vodafone_holder")
+        .eq("user_id", consult!.doctor_id!)
+        .maybeSingle();
+      return data;
+    },
+  });
+
 
   const { data: payment, isLoading: loadingPayment } = useQuery({
     queryKey: ["payment", id],
@@ -154,7 +168,7 @@ function PaymentPage() {
             </div>
             <PaymentInfoRow
               label={t("payment.info.number")}
-              value={doctor.vodafone_number ?? "—"}
+              value={paymentDetails?.vodafone_number ?? "—"}
               copyable
               copiedLabel={t("payment.info.copied")}
               copyAria={t("payment.info.copy")}
@@ -162,7 +176,8 @@ function PaymentPage() {
             <div className="my-3 h-px bg-slate-100" />
             <PaymentInfoRow
               label={t("payment.info.holder")}
-              value={doctor.vodafone_holder ?? "—"}
+              value={paymentDetails?.vodafone_holder ?? "—"}
+
             />
             <div className="my-3 h-px bg-slate-100" />
             <PaymentInfoRow

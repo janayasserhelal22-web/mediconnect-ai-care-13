@@ -127,7 +127,7 @@ function AuthPage() {
           email,
           password,
           options: {
-            emailRedirectTo: `${window.location.origin}/`,
+            emailRedirectTo: `${window.location.origin}${returnTo ?? "/"}`,
             data: {
               full_name: fullName,
               role: searchRole,
@@ -175,7 +175,7 @@ function AuthPage() {
             </p>
             <Link
               to="/auth"
-              search={{ role: searchRole, mode: "signin" }}
+              search={{ role: searchRole, mode: "signin", next }}
               onClick={() => setSentToEmail(null)}
               className="mt-6 inline-block rounded-xl bg-brand px-6 py-3 text-sm font-bold text-white hover:bg-brand-dark"
             >
@@ -284,7 +284,7 @@ function AuthPage() {
               {isSignUp ? t("auth.haveAccount") : t("auth.noAccount")}{" "}
               <Link
                 to="/auth"
-                search={{ role: searchRole, mode: isSignUp ? "signin" : "signup" }}
+                search={{ role: searchRole, mode: isSignUp ? "signin" : "signup", next }}
                 className="font-semibold text-brand hover:underline"
               >
                 {isSignUp ? t("auth.switchSignIn") : t("auth.switchSignUp")}

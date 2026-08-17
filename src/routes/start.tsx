@@ -59,7 +59,7 @@ function RoleCard({
   return (
     <Link
       to={to}
-      search={params}
+      search={{ ...params, mode: "signup" as const }}
       className="group rounded-3xl border border-slate-200 bg-white p-6 shadow-sm transition-all hover:-translate-y-0.5 hover:border-brand/40 hover:shadow-md"
     >
       <div className="flex size-14 items-center justify-center rounded-2xl bg-brand/10 text-brand transition-colors group-hover:bg-brand group-hover:text-white">

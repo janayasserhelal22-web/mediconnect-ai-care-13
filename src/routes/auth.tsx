@@ -10,7 +10,16 @@ import { z } from "zod";
 const SearchSchema = z.object({
   role: z.enum(["patient", "doctor"]).default("patient"),
   mode: z.enum(["signin", "signup"]).default("signup"),
+  // Same-origin relative path to return to after auth (used by the OAuth consent flow).
+  next: z.string().optional(),
 });
+
+/** Only allow same-origin relative paths as post-auth redirect targets. */
+function safeNext(next: string | undefined): string | null {
+  if (!next) return null;
+  if (!next.startsWith("/") || next.startsWith("//")) return null;
+  return next;
+}
 
 export const Route = createFileRoute("/auth")({
   validateSearch: (search) => SearchSchema.parse(search),
@@ -52,12 +61,18 @@ function mapAuthError(
 
 function AuthPage() {
   const { t, locale } = useI18n();
-  const { role: searchRole, mode } = Route.useSearch();
+  const { role: searchRole, mode, next } = Route.useSearch();
   const navigate = useNavigate();
   const { user, role: userRole, loading } = useAuth();
+  const returnTo = safeNext(next);
 
   useEffect(() => {
     if (loading) return;
+    // A pending OAuth consent (or other same-origin destination) wins over the default landing.
+    if (user && returnTo) {
+      window.location.replace(returnTo);
+      return;
+    }
     if (user && userRole) {
       navigate({
         to: userRole === "doctor" ? "/doctor" : "/intake/$id",
@@ -65,7 +80,7 @@ function AuthPage() {
         replace: true,
       });
     }
-  }, [user, userRole, loading, navigate]);
+  }, [user, userRole, loading, navigate, returnTo]);
 
   const [submitting, setSubmitting] = useState(false);
   const [cooldown, setCooldown] = useState(0);
@@ -112,7 +127,7 @@ function AuthPage() {
           email,
           password,
           options: {
-            emailRedirectTo: `${window.location.origin}/`,
+            emailRedirectTo: `${window.location.origin}${returnTo ?? "/"}`,
             data: {
               full_name: fullName,
               role: searchRole,
@@ -160,7 +175,7 @@ function AuthPage() {
             </p>
             <Link
               to="/auth"
-              search={{ role: searchRole, mode: "signin" }}
+              search={{ role: searchRole, mode: "signin", next }}
               onClick={() => setSentToEmail(null)}
               className="mt-6 inline-block rounded-xl bg-brand px-6 py-3 text-sm font-bold text-white hover:bg-brand-dark"
             >
@@ -269,7 +284,7 @@ function AuthPage() {
               {isSignUp ? t("auth.haveAccount") : t("auth.noAccount")}{" "}
               <Link
                 to="/auth"
-                search={{ role: searchRole, mode: isSignUp ? "signin" : "signup" }}
+                search={{ role: searchRole, mode: isSignUp ? "signin" : "signup", next }}
                 className="font-semibold text-brand hover:underline"
               >
                 {isSignUp ? t("auth.switchSignIn") : t("auth.switchSignUp")}

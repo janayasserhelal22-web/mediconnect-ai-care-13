@@ -10,7 +10,16 @@ import { z } from "zod";
 const SearchSchema = z.object({
   role: z.enum(["patient", "doctor"]).default("patient"),
   mode: z.enum(["signin", "signup"]).default("signup"),
+  // Same-origin relative path to return to after auth (used by the OAuth consent flow).
+  next: z.string().optional(),
 });
+
+/** Only allow same-origin relative paths as post-auth redirect targets. */
+function safeNext(next: string | undefined): string | null {
+  if (!next) return null;
+  if (!next.startsWith("/") || next.startsWith("//")) return null;
+  return next;
+}
 
 export const Route = createFileRoute("/auth")({
   validateSearch: (search) => SearchSchema.parse(search),

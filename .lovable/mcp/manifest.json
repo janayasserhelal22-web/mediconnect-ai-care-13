@@ -1,0 +1,130 @@
+{
+  "version": 1,
+  "sdk_version": "0.26.2",
+  "path": "/mcp",
+  "auth": {
+    "type": "oauth",
+    "issuer": "https://cifkkwesjzuyfpvjyydp.supabase.co/auth/v1",
+    "accepted_audiences": [
+      "authenticated"
+    ]
+  },
+  "mcp": {
+    "server": {
+      "name": "connect-care",
+      "version": "0.1.0",
+      "title": "Connect Care"
+    },
+    "tools": [
+      {
+        "name": "list_consultations",
+        "title": "List consultations",
+        "description": "List the signed-in user's consultations on Tammeni Doctor. Patients see their own consultations; doctors see the cases assigned to them. Returns id, status, locale and timestamps, newest first.",
+        "annotations": {
+          "readOnlyHint": true,
+          "idempotentHint": true,
+          "openWorldHint": false
+        },
+        "inputSchema": {
+          "$schema": "http://json-schema.org/draft-07/schema#",
+          "type": "object",
+          "properties": {
+            "status": {
+              "description": "Optional status filter, e.g. intake, review, awaiting_payment, active, completed.",
+              "type": "string"
+            },
+            "limit": {
+              "description": "Maximum rows to return (default 20, max 100).",
+              "type": "integer",
+              "minimum": -9007199254740991,
+              "maximum": 9007199254740991
+            }
+          }
+        },
+        "outputSchema": null
+      },
+      {
+        "name": "get_consultation",
+        "title": "Get consultation details",
+        "description": "Get one consultation with its AI medical review (chief complaint, symptoms, duration, severity, risk score/level, emergency flags, recommended specialties) and, optionally, the AI intake transcript. Only consultations the signed-in user may access are returned.",
+        "annotations": {
+          "readOnlyHint": true,
+          "idempotentHint": true,
+          "openWorldHint": false
+        },
+        "inputSchema": {
+          "$schema": "http://json-schema.org/draft-07/schema#",
+          "type": "object",
+          "properties": {
+            "consultation_id": {
+              "type": "string",
+              "description": "The consultation id (uuid)."
+            },
+            "include_transcript": {
+              "description": "Include the AI intake transcript messages (default false).",
+              "type": "boolean"
+            }
+          },
+          "required": [
+            "consultation_id"
+          ]
+        },
+        "outputSchema": null
+      },
+      {
+        "name": "list_doctors",
+        "title": "List doctors",
+        "description": "Browse doctors available on Tammeni Doctor, optionally filtered by specialty (English or Arabic). Returns name, specialty, years of experience, rating, fee and availability.",
+        "annotations": {
+          "readOnlyHint": true,
+          "idempotentHint": true,
+          "openWorldHint": false
+        },
+        "inputSchema": {
+          "$schema": "http://json-schema.org/draft-07/schema#",
+          "type": "object",
+          "properties": {
+            "specialty": {
+              "description": "Optional specialty filter, matched case-insensitively, e.g. Cardiology.",
+              "type": "string"
+            },
+            "limit": {
+              "description": "Maximum rows to return (default 20, max 50).",
+              "type": "integer",
+              "minimum": -9007199254740991,
+              "maximum": 9007199254740991
+            }
+          }
+        },
+        "outputSchema": null
+      },
+      {
+        "name": "list_prescriptions",
+        "title": "List prescriptions",
+        "description": "List prescriptions the signed-in user can access on Tammeni Doctor, optionally scoped to one consultation. Returns medications, instructions and issue date.",
+        "annotations": {
+          "readOnlyHint": true,
+          "idempotentHint": true,
+          "openWorldHint": false
+        },
+        "inputSchema": {
+          "$schema": "http://json-schema.org/draft-07/schema#",
+          "type": "object",
+          "properties": {
+            "consultation_id": {
+              "description": "Optional consultation id (uuid) to filter by.",
+              "type": "string"
+            },
+            "limit": {
+              "description": "Maximum rows to return (default 20, max 50).",
+              "type": "integer",
+              "minimum": -9007199254740991,
+              "maximum": 9007199254740991
+            }
+          }
+        },
+        "outputSchema": null
+      }
+    ]
+  }
+}

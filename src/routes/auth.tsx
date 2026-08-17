@@ -61,12 +61,18 @@ function mapAuthError(
 
 function AuthPage() {
   const { t, locale } = useI18n();
-  const { role: searchRole, mode } = Route.useSearch();
+  const { role: searchRole, mode, next } = Route.useSearch();
   const navigate = useNavigate();
   const { user, role: userRole, loading } = useAuth();
+  const returnTo = safeNext(next);
 
   useEffect(() => {
     if (loading) return;
+    // A pending OAuth consent (or other same-origin destination) wins over the default landing.
+    if (user && returnTo) {
+      window.location.replace(returnTo);
+      return;
+    }
     if (user && userRole) {
       navigate({
         to: userRole === "doctor" ? "/doctor" : "/intake/$id",
@@ -74,7 +80,7 @@ function AuthPage() {
         replace: true,
       });
     }
-  }, [user, userRole, loading, navigate]);
+  }, [user, userRole, loading, navigate, returnTo]);
 
   const [submitting, setSubmitting] = useState(false);
   const [cooldown, setCooldown] = useState(0);
